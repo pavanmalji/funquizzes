@@ -20,9 +20,9 @@ session_start();
 $client = new Google_Client();
 $client->setApplicationName("Fun Quizes");
 $client->setScopes(array('https://www.googleapis.com/auth/userinfo.email', 'https://www.googleapis.com/auth/plus.me', 'https://www.googleapis.com/auth/plus.login')); // set scope during user login
-$client->setClientId('XXXXXX.apps.googleusercontent.com');
-$client->setClientSecret('XXXXXXXXXXXXXXXX');
-$client->setRedirectUri('http://funquizes.azurewebsites.net/gplus-auth-redirect.php');
+$client->setClientId('529800480931-4olm7fomvrvn7evr8b71ksrdbguqamn3.apps.googleusercontent.com');
+$client->setClientSecret('rCODRuDRanlQQUle_zDUySRH');
+$client->setRedirectUri('http://funquizzes.azurewebsites.net/gplus-auth-redirect.php');
 // $client->setDeveloperKey('XXXXXXXXXXXXXXXX'); // Developer key
 $plus = new Google_PlusService($client);
 $oauth2 = new Google_Oauth2Service($client); // Call the OAuth2 class for get email address
