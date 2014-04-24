@@ -1,0 +1,95 @@
+﻿<div class="row panel" style="background: white;">
+    <div id="login" class="large-8 small-centered large-centered columns">
+      <h3>Login</h3>
+      <div class="panel">
+        <div class="row">
+          <div class="small-12 columns">
+            <div data-bind="css: loginMessageCSS, text: loginMessage"></div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="small-4 columns">
+            <label for="right-label" class="right inline">User ID*</label>
+          </div>
+          <div class="small-8 columns">
+            <input type="text" data-bind="value: loginUserid"  placeholder="Enter Your User ID"/>
+          </div>
+        </div>
+        <div class="row">
+          <div class="small-4 columns">
+            <label for="right-label" class="right inline">Password*</label>
+          </div>
+          <div class="small-8 columns">
+            <input type="password" data-bind="value: loginPassword"  placeholder="Enter Password"/>
+          </div>
+        </div>
+        <div class="row">
+          <div class="small-12 columns right">
+            <div class="right">
+              <button data-bind="click: login, enable: loginEnable, text: loginValue"/>
+              <a data-bind="click: showRegister">Don't have an Account ?</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="register" style="display:none;" class="large-8 small-centered large-centered columns">
+      <h3>New User</h3>
+      <div class="panel">
+        <div class="row">
+          <div class="small-12 columns">
+            <div data-bind="css: registerMessageCSS, text: registerMessage"></div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="small-4 columns">
+            <label for="right-label" class="right inline">User ID*</label>
+          </div>
+          <div class="small-8 columns">
+            <input type="text" data-bind="value: registerUserid" placeholder="Choose a User ID"/>
+          </div>
+        </div>
+        <div class="row">
+          <div class="small-4 columns">
+            <label for="right-label" class="right inline">Password*</label>
+          </div>
+          <div class="small-8 columns">
+            <input type="password" data-bind="value: registerPassword" placeholder="Choose a Password"/>
+          </div>
+        </div>
+        <div class="row">
+          <div class="small-4 columns">
+            <label for="right-label" class="right inline">Re-enter Password*</label>
+          </div>
+          <div class="small-8 columns">
+            <input type="password" data-bind="value: registerConfirmpassword" placeholder="Re-enter Password"/>
+          </div>
+        </div>
+        <div class="row">
+          <div class="small-4 columns">
+            <label for="right-label" class="right inline">Full Name</label>
+          </div>
+          <div class="small-8 columns">
+            <input type="text" data-bind="value: registerNickname" placeholder="Your Full Name"/>
+          </div>
+        </div>
+        <div class="row">
+          <div class="small-4 columns">
+            <label for="right-label" class="right inline">Email*</label>
+          </div>
+          <div class="small-8 columns">
+            <input type="text" data-bind="value: registerEmail" placeholder="Your Email Address"/>
+          </div>
+        </div>
+        <div class="row">
+          <div class="small-12 columns">
+            <div class="right">
+              <button data-bind="click: register, enable: registerEnable, text: registerValue"/>
+              <a data-bind="click: showLogin">I have an Account ?</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+</div>

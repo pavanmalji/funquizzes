@@ -1,0 +1,30 @@
+﻿<form class="custom">
+  <div class="row panel" style="background: white;">
+    <div id="joinquiz" class="small-12 large-8 small-centered large-centered columns">
+      <h3>Join a Quiz</h3>
+      <div class="panel">
+        <div class="row">
+          <div class="small-12 columns">
+            <div data-bind="css: joinquizMessageCSS, text: joinquizMessage"></div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="small-4 columns">
+            <label for="right-label" class="right inline">Select a Quiz*</label>
+          </div>
+          <div class="small-8 columns">
+            <select data-bind="options: availableQuizes, optionsText: 'name', optionsValue: '_id', value: selectedQuizId"></select>
+          </div>
+        </div>
+        <div class="row">
+          <div class="small-12 columns right">
+            <div class="right">
+              <button data-bind="click: joinquiz, enable: joinquizEnable, text: joinquizValue"/>
+              <!--<button data-bind="click: joinquizReload, enable: joinquizReloadEnable, text: joinquizReloadValue"/>-->
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>

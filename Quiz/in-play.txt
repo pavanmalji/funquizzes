@@ -1,0 +1,45 @@
+﻿<form class="custom">
+  <div class="row panel" style="background: white;">
+    <div id="inplay" class="small-12 large-8 small-centered large-centered columns">
+      <h3 data-bind="text: inplayQuizName"></h3>
+      <div class="panel">
+        <div class="row">
+          <div class="small-12 columns">
+            <div data-bind="css: inplayMessageCSS, text: inplayMessage"></div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="small-12 columns">
+
+            <span data-bind="template: { name: 'questionanswersTemplate', data: questionanswers, afterRender: initFoundation }"></span>
+
+            <script type="text/html" id="questionanswersTemplate">
+              <p>
+                <strong>Question: </strong>
+                <span data-bind="text: question"></span>&nbsp;?
+              </p>
+              <div data-bind="template: { name: 'choicesTemplate', foreach: choices, as: 'choice' }"></div>
+            </script>
+
+            <script type="text/html" id="choicesTemplate">
+              <p>
+              <input name="choice" type="radio" data-bind="value: choice, checked: $root.selectedAnswer" />
+              <span class="custom radio"></span>
+              <span data-bind="text: choice"></span>
+              </p>
+            </script>
+            
+          </div>
+        </div>
+        <div class="row">
+          <div class="small-12 columns">
+            <div class="right">
+              <button data-bind="click: inplaySubmitAnswer, enable: inplaySubmitAnswerEnable, text: inplaySubmitAnswerValue"/>
+              <button data-bind="click: inplaySkipQuestion, enable: inplaySkipQuestionEnable, text: inplaySkipQuestionValue"/>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>

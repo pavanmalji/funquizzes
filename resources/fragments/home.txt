@@ -1,0 +1,29 @@
+<!-- ko ifnot: sessionUser().isLoggedIn -->
+<div class="row marketing">
+    <div class="col-lg-8">
+        <img src="resources/images/quiz.gif" style="width:100%;"/>
+    </div>
+    <div class="col-lg-4">
+        <div style="padding-top: 10px;">
+            <a class="btn btn-block btn-social btn-google-plus" data-bind="attr: { href: sessionUser().urlLoginGplus }">
+                <i class="fa fa-google-plus"></i> Sign in with Google
+            </a>
+        </div>
+    </div>
+</div>
+<!-- /ko -->
+
+<!-- ko if: sessionUser().isLoggedIn -->
+<div class="row marketing">
+    <div class="col-lg-4">
+        <h4>Administer Quiz</h4>
+    </div>
+    <div class="col-lg-4">
+        <h4>Join Quiz</h4>
+    </div>
+    <div class="col-lg-4">
+        <h4>Statistics</h4>
+    </div>
+</div>
+<!-- /ko -->
+

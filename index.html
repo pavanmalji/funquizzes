@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Fun Quizzes</title>
+
+        <!-- Bootstrap -->
+        <link href="resources/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+        <link href="resources/bootstrap/css/jumbotron-narrow.css" rel="stylesheet">
+        <link href="resources/bootstrap/css/bootstrap-social.css" rel="stylesheet">
+        <link href="resources/bootstrap/css/font-awesome.css" rel="stylesheet">
+
+        <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+        <!--[if lt IE 9]>
+          <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+          <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+        <![endif]-->
+    </head>
+    <body>
+        <div class="container">
+            <div class="header">
+                <!-- Fixed navbar -->
+                <div class="navbar navbar-default" role="navigation">
+                    <div class="container">
+                        <div class="navbar-header">
+                            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                                <span class="sr-only">Toggle navigation</span>
+                                <span class="icon-bar"></span>
+                                <span class="icon-bar"></span>
+                                <span class="icon-bar"></span>
+                            </button>
+                            <a class="navbar-brand page-link" href="home">Fun Quizzes</a>
+                        </div>
+                        <div class="collapse navbar-collapse">
+                            <ul class="nav navbar-nav pull-right">
+                                <li><a class="page-link" href="about">About</a></li>
+                                <li><a class="page-link" href="contact">Contact</a></li>
+                                
+                                <!-- ko ifnot: sessionUser().isLoggedIn -->
+                                    <li><a><strong class="text-danger" data-bind="text:sessionUser().displayname"></strong></a></li>
+                                <!-- /ko -->
+                                
+                                <!-- ko if: sessionUser().isLoggedIn -->
+                                    <li><a style="padding-right: 5px;"><strong class="text-danger" data-bind="text:sessionUser().displayname"></strong></a></li>
+                                    <li><a style="padding-left: 0px;" data-bind="attr: { href: sessionUser().urlLogoutGplus }">(logout)</a></li>
+                                <!-- /ko -->
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- ko if: currentPageMessage().showMessage -->
+            <div data-bind="text:currentPageMessage().displayText, attr: {class: currentPageMessage().displayStyle}">
+            </div>
+            <!-- /ko -->
+
+            <div id="page-content">
+            </div>
+           
+            <div class="footer">
+                <div class="container">
+                    <p>&copy; NoInk 2014; Some Credit Deserved.</p>
+                </div>
+            </div>
+
+        </div> <!-- /container -->
+
+        <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+        <script src="resources/bootstrap/js/bootstrap.min.js"></script>
+        <script src="resources/js/knockout-3.1.0.js"></script>
+        <script src="resources/js/main.js"></script>
+
+        <script type="text/javascript">
+            $(document).ready(function() {
+                initApp();
+            });
+        </script>
+    </body>
+</html>
