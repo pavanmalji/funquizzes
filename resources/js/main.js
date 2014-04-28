@@ -92,7 +92,8 @@ function getSessionData() {
 }
 
 $('.page-link').click(function(e){
-    event.preventDefault();
+    e.preventDefault();
+    viewModel.currentPageMessage().showMessage(false);
     viewModel.currentPageURL($(this).attr('href'));
 });
 

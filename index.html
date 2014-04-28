@@ -21,7 +21,23 @@
     </head>
     <body>
         <div class="container">
+
             <div class="header">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <!-- ko ifnot: sessionUser().isLoggedIn -->
+                        <strong class="text-danger pull-right" style="padding-right:5px;" data-bind="text:sessionUser().displayname"></strong>
+                        <!-- /ko -->
+
+                        <!-- ko if: sessionUser().isLoggedIn -->
+                        <div class="pull-right" style="padding-right:5px;">
+                            <strong class="text-danger" data-bind="text:sessionUser().displayname"></strong>
+                            <a data-bind="attr: { href: sessionUser().urlLogoutGplus }">(logout)</a>
+                        </div>
+                        <!-- /ko -->
+                    </div>
+                </div>
+
                 <!-- Fixed navbar -->
                 <div class="navbar navbar-default" role="navigation">
                     <div class="container">
@@ -38,29 +54,22 @@
                             <ul class="nav navbar-nav pull-right">
                                 <li><a class="page-link" href="about">About</a></li>
                                 <li><a class="page-link" href="contact">Contact</a></li>
-                                
-                                <!-- ko ifnot: sessionUser().isLoggedIn -->
-                                    <li><a><strong class="text-danger" data-bind="text:sessionUser().displayname"></strong></a></li>
-                                <!-- /ko -->
-                                
-                                <!-- ko if: sessionUser().isLoggedIn -->
-                                    <li><a style="padding-right: 5px;"><strong class="text-danger" data-bind="text:sessionUser().displayname"></strong></a></li>
-                                    <li><a style="padding-left: 0px;" data-bind="attr: { href: sessionUser().urlLogoutGplus }">(logout)</a></li>
-                                <!-- /ko -->
                             </ul>
                         </div>
                     </div>
                 </div>
             </div>
-            
+
             <!-- ko if: currentPageMessage().showMessage -->
-            <div data-bind="text:currentPageMessage().displayText, attr: {class: currentPageMessage().displayStyle}">
+            <div data-bind="attr: {class: currentPageMessage().displayStyle}">
+                 <a href="#" class="close" data-dismiss="alert">&times;</a>
+                 <span data-bind="text:currentPageMessage().displayText"></span>
             </div>
             <!-- /ko -->
 
             <div id="page-content">
             </div>
-           
+
             <div class="footer">
                 <div class="container">
                     <p>&copy; NoInk 2014; Some Credit Deserved.</p>
