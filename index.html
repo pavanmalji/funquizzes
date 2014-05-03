@@ -25,14 +25,14 @@
             <div class="header">
                 <div class="row">
                     <div class="col-lg-12">
-                        <!-- ko ifnot: sessionUser().isLoggedIn -->
-                        <strong class="text-danger pull-right" style="padding-right:5px;" data-bind="text:sessionUser().displayname"></strong>
+                        <!-- ko ifnot: sessionUser().online -->
+                        <strong class="text-danger pull-right" style="padding-right:5px;" data-bind="text:sessionUser().name"></strong>
                         <!-- /ko -->
 
-                        <!-- ko if: sessionUser().isLoggedIn -->
+                        <!-- ko if: sessionUser().online -->
                         <div class="pull-right" style="padding-right:5px;">
-                            <strong class="text-danger" data-bind="text:sessionUser().displayname"></strong>
-                            <a data-bind="attr: { href: sessionUser().urlLogoutGplus }">(logout)</a>
+                            <strong class="text-danger" data-bind="text:sessionUser().name"></strong>
+                            <a class="logout" href="#">(logout)</a>
                         </div>
                         <!-- /ko -->
                     </div>

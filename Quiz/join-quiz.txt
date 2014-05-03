@@ -1,4 +1,4 @@
-﻿<form class="custom">
+<form class="custom">
   <div class="row panel" style="background: white;">
     <div id="joinquiz" class="small-12 large-8 small-centered large-centered columns">
       <h3>Join a Quiz</h3>

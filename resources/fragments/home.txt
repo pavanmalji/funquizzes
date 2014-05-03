@@ -1,11 +1,11 @@
-<!-- ko ifnot: sessionUser().isLoggedIn -->
+<!-- ko ifnot: sessionUser().online -->
 <div class="row marketing">
     <div class="col-lg-8">
         <img src="resources/images/quiz.gif" style="width:100%;"/>
     </div>
     <div class="col-lg-4">
         <div style="padding-top: 10px;">
-            <a class="btn btn-block btn-social btn-google-plus" data-bind="attr: { href: sessionUser().urlLoginGplus }">
+            <a class="btn btn-block btn-social btn-google-plus login" href="gplus">
                 <i class="fa fa-google-plus"></i> Sign in with Google
             </a>
         </div>
@@ -13,17 +13,27 @@
 </div>
 <!-- /ko -->
 
-<!-- ko if: sessionUser().isLoggedIn -->
+<!-- ko if: sessionUser().online -->
 <div class="row marketing">
-    <div class="col-lg-4">
-        <h4>Administer Quiz</h4>
+    <div class="col-lg-6">
+        <div class="panel panel-info">
+            <div class="panel-heading"><h4>Player</h4></div>
+            <div class="panel-body">
+                <p>1. Select an active quiz and play.</p>
+                <p>2. View your stats.</p>
+                <a class="btn btn-primary page-link" role="button" href="player">Select Quiz</a>
+            </div>
+          </div>
     </div>
-    <div class="col-lg-4">
-        <h4>Join Quiz</h4>
-    </div>
-    <div class="col-lg-4">
-        <h4>Statistics</h4>
+    <div class="col-lg-6">
+        <div class="panel panel-info">
+            <div class="panel-heading"><h4>Quiz Master</h4></div>
+            <div class="panel-body">
+                <p>1. Procter a Quiz.</p>
+                <p>2. C.R.U.D. a Quiz.</p>              
+                <a class="btn btn-primary page-link" role="button" href="quizmaster">Administer</a>
+            </div>
+          </div>
     </div>
 </div>
 <!-- /ko -->
-
