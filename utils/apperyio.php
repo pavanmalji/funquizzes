@@ -7,7 +7,7 @@ class apperyio {
         $timeout = 5;
         
         $httpheaders = array();
-        array_push($httpheaders, 'X-Appery-Database-Id: 5239bcf9e4b038f7ef2db97b');
+        array_push($httpheaders, 'X-Appery-Database-Id: XXXXXXXX');
         if(!is_null($sessiontoken)) {
             array_push($httpheaders, 'X-Appery-Session-Token: '.$sessiontoken);
         }
@@ -34,7 +34,7 @@ class apperyio {
         $timeout = 5;
         
         $httpheaders = array();
-        array_push($httpheaders, 'X-Appery-Database-Id: 5239bcf9e4b038f7ef2db97b');
+        array_push($httpheaders, 'X-Appery-Database-Id: XXXXXXXXXX');
         array_push($httpheaders, 'Content-Type: application/json');
         if(!is_null($sessiontoken)) {
             array_push($httpheaders, 'X-Appery-Session-Token: '.$sessiontoken);
