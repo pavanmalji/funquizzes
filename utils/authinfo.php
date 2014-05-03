@@ -16,8 +16,8 @@ if (isset($_GET['gplus'])) {
         $client = new Google_Client();
         $client->setApplicationName("Fun Quizes");
         $client->setScopes(array('https://www.googleapis.com/auth/userinfo.profile')); // set scope during user login
-        $client->setClientId('529800480931-4olm7fomvrvn7evr8b71ksrdbguqamn3.apps.googleusercontent.com');
-        $client->setClientSecret('rCODRuDRanlQQUle_zDUySRH');
+        $client->setClientId('XXXXXXXXX.apps.googleusercontent.com');
+        $client->setClientSecret('XXXXXXXXX');
         $client->setRedirectUri('http://funquizzes.azurewebsites.net/gplus-auth-redirect.php');
         $client->setApprovalPrompt('auto');
         
