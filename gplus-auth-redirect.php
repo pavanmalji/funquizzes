@@ -7,8 +7,8 @@ require_once 'utils/apperyio.php';
 $client = new Google_Client();
 $client->setApplicationName("Fun Quizes");
 $client->setScopes(array('https://www.googleapis.com/auth/userinfo.profile')); // set scope during user login
-$client->setClientId('529800480931-4olm7fomvrvn7evr8b71ksrdbguqamn3.apps.googleusercontent.com');
-$client->setClientSecret('rCODRuDRanlQQUle_zDUySRH');
+$client->setClientId('XXXXXXXXX.apps.googleusercontent.com');
+$client->setClientSecret('XXXXXXXX');
 $client->setRedirectUri('http://funquizzes.azurewebsites.net/gplus-auth-redirect.php');
 $client->setApprovalPrompt('auto');
 $oauth2 = new Google_Oauth2Service($client); // Call the OAuth2 class for get email address
