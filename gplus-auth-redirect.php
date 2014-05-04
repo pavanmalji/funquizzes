@@ -29,7 +29,8 @@ if (isset($_GET['logout'])) {
     unset($_SESSION['user']);
     
     session_destroy();
-    header('Location: https://www.google.com/accounts/Logout?continue=https://appengine.google.com/_ah/logout?continue=http://' . $_SERVER['HTTP_HOST']);
+    
+    // header('Location: https://www.google.com/accounts/Logout?continue=https://appengine.google.com/_ah/logout?continue=http://' . $_SERVER['HTTP_HOST']);
 }
 
 

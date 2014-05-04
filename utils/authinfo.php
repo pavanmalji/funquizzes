@@ -5,7 +5,8 @@ require_once '../vendor/google/Google_Client.php';
 $guest = array(
                 '_id' => '000000000000000000000000',
                 'name' => 'Guest',
-                'online' => false
+                'online' => false,
+                'provider' => 'none'
             );
 
 session_start();
@@ -37,6 +38,10 @@ if(isset($_GET['user'])) {
     } else {
         $response = json_encode($guest);
     }
+}
+
+if(isset($_GET['guest'])) {
+    $response = json_encode($guest);
 }
 
 print($response);

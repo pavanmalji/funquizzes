@@ -2,6 +2,31 @@
 // Date: 2014-04-23
 // License: MIT (http://www.opensource.org/licenses/mit-license.php)
 
+var sessioncookie = 'sessioncooky';
+function cooky(providerKey) {
+    return {
+        provider: providerKey,
+        modifiedAt: Math.round((new Date()).getTime()/1000)
+    };
+}
+
+function getSessionCookie() {
+    var cookieInfo = $.cookie(sessioncookie);
+    if (cookieInfo)
+        return JSON.parse(cookieInfo);
+
+    return null;
+}
+
+function setSessionCookie(cookieInfo) {
+    $.cookie(sessioncookie, JSON.stringify(cookieInfo), { path: '/' });
+}
+
+function deleteSessionCookie() {
+    $.cookie(sessioncookie, null, { path: '/' });
+}
+
+
 var pages = {
     home: 'resources/fragments/home.txt',
     about: 'resources/fragments/about.txt',
@@ -37,10 +62,13 @@ var message = {
 
 var viewModel = {
     sessionUser: ko.observable([]),
-    activeQuizzes: ko.observable([]),
     currentPageURL: ko.observable('home'),
     currentPage: ko.observable(''),
     currentPageMessage: ko.observable(message),
+    activeQuizzes: ko.observable([]),
+    joinQuiz: function(data, event) {
+        alert(data._id);
+    }
 };
 
 viewModel.currentPageURL().loadPage = ko.dependentObservable(function() {
@@ -56,6 +84,7 @@ viewModel.currentPageURL().loadPage = ko.dependentObservable(function() {
                 $.get( "utils/authinfo.php?user", function( data ) {
                     if(data.length > 0) {
                         viewModel.sessionUser($.parseJSON(data));
+                        setSessionCookie(new cooky(viewModel.sessionUser().provider));
                     }
                 });
             }
@@ -70,15 +99,16 @@ $(document).on( "click", ".page-link", function(e) {
 
 $(document).on( "click", ".login", function(e) {
     e.preventDefault();
-    var provider = $(this).attr('href');
-    window.location = authURLS[provider].login;
+    var providerKey = $(this).attr('href');
+    window.location = authURLS[providerKey].login;
 });
 
 $(document).on( "click", ".logout", function(e) {
     e.preventDefault();
     
-    var provider = viewModel.sessionUser().provider;
-    window.location = authURLS[provider].logout;
+    var providerKey = viewModel.sessionUser().provider;
+    deleteSessionCookie();
+    window.location = authURLS[providerKey].logout;
 });
 
 function getActiveQuizzes() {
@@ -90,6 +120,14 @@ function getActiveQuizzes() {
 }
 
 function postPageLoad() {
+    if(!isSessionAlive() && !isAnonymousSession()) {
+        var index = getSessionCookie().provider;
+        deleteSessionCookie();
+        if(authURLS[index].logout !== '') {
+            window.location = authURLS[index].logout;
+        }
+    }
+    
     switch(viewModel.currentPageURL()) {
         case 'player' : getActiveQuizzes();
             break;
@@ -97,8 +135,8 @@ function postPageLoad() {
 }
 
 function initAuthURLS() {
-    for(provider in authURLS) {
-        $.get( "utils/authinfo.php?" + provider + "&authurls", function( data ) {
+    for(var providerKey in authURLS) {
+        $.get( "utils/authinfo.php?" + providerKey + "&authurls", function( data ) {
             if(data.length > 0) {
                 data = $.parseJSON(data);
                 authURLS[data.provider].login = data.login;
@@ -108,7 +146,38 @@ function initAuthURLS() {
     }
 }
 
+function isSessionAlive() {
+    var sessionInfo = getSessionCookie();
+    
+    var SESSION_ALIVE_TIME = 1800; //in seconds -30 mins
+    var now = Math.round((new Date()).getTime()/1000);
+    
+    if(Math.abs(now - sessionInfo.modifiedAt) < SESSION_ALIVE_TIME) {
+        return true;
+    }
+    
+    return false;
+}
+
+function isAnonymousSession() {
+    if(getSessionCookie().provider === 'none') {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+
+function initSessionCookie() {
+    var sessionInfo = getSessionCookie();
+    
+    if(sessionInfo === null) {
+        setSessionCookie(new cooky('none'));
+    }
+}
+
 function initApp() {
+    initSessionCookie();
     initAuthURLS();
     ko.applyBindings(viewModel);
 }
