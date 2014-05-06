@@ -26,12 +26,12 @@ function deleteSessionCookie() {
     $.cookie(sessioncookie, null, { path: '/' });
 }
 
-
 var pages = {
     home: 'resources/fragments/home.txt',
     about: 'resources/fragments/about.txt',
     contact: 'resources/fragments/contact.txt',
     player: 'resources/fragments/player.txt',
+    quiz: 'resources/fragments/quiz.txt',
     quizmaster: 'resources/fragments/quizmaster.txt'
 };
 
@@ -63,11 +63,22 @@ var message = {
 var viewModel = {
     sessionUser: ko.observable([]),
     currentPageURL: ko.observable('home'),
-    currentPage: ko.observable(''),
     currentPageMessage: ko.observable(message),
     activeQuizzes: ko.observable([]),
+    quizData: ko.observable([]),
+    
     joinQuiz: function(data, event) {
-        alert(data._id);
+        var postData = {
+            joinquiz:true,
+            quiz: data
+        };
+        
+        $.post("utils/quizinfo.php", postData,  function(data, status){
+                                                    if(data.length > 0) {
+                                                        viewModel.quizData($.parseJSON(data));
+                                                        viewModel.currentPageURL('quiz');
+                                                    }                                       
+                                                });
     }
 };
 
@@ -90,6 +101,34 @@ viewModel.currentPageURL().loadPage = ko.dependentObservable(function() {
             }
         });
 }, viewModel);
+
+function ajaxPost(url, postParams) {
+    $.ajax({
+        url: url,
+        cache: false,
+        type: 'POST',
+        context: document.body,
+        data: { "": JSON.stringify(postParams) },
+        dataType: "json",
+        success: function (data) {
+            user.userquizid = userquizid;
+            setSessionUser();
+            self.joinquizMessage("Quiz Joined Successfully : " + user.userquizid);
+            self.joinquizMessageCSS(getMessageCSS("SUCCESS"));
+        },
+        error: function (xhr, status, error) {
+            var err = eval("(" + xhr.responseText + ")");
+            var message = err.hasOwnProperty("ExceptionMessage") ? err.ExceptionMessage : messageMap['ERR_CONNECTION'];
+            self.joinquizMessage(message);
+            self.joinquizMessageCSS(getMessageCSS("ERROR"));
+        },
+        complete: function (xhr, status, error) {
+            self.joinquizEnable(true);
+            self.joinquizValue(joinquizValue);
+        }
+    });
+}
+        
 
 $(document).on( "click", ".page-link", function(e) {
     e.preventDefault();

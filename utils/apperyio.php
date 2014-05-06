@@ -1,5 +1,4 @@
 <?php
-
 class apperyio {
     
     private function do_get($url, $sessiontoken=NULL) {
@@ -112,8 +111,26 @@ class apperyio {
     
     function get_active_quizzes($sessiontoken) {
         $where = array ('active' => true);
-        return self::do_get('https://api.appery.io/rest/1/db/collections/Quizes/?where=' . urlencode(json_encode($where, JSON_UNESCAPED_SLASHES)), $sessiontoken);
+        return self::do_get('https://api.appery.io/rest/1/db/collections/Quizzes/?where=' . urlencode(json_encode($where, JSON_UNESCAPED_SLASHES)), $sessiontoken);
+    }
+    
+    function join_quiz($userId, $quiz, $sessiontoken) {
+        $data = array(
+            'userId' => $userId,
+            'quizId' => $quiz['_id']
+        );
+        
+        $quizdata = json_decode(self::do_post('https://api.appery.io/rest/1/db/collections/QuizzesUsers/', $data, $sessiontoken));
+        
+        $or = array();
+        
+        foreach ($quiz['questionids'] as $value) {
+            array_push($or, array('_id' => $value));
+        }
+        
+        $where = json_encode(array('$or' => $or), JSON_UNESCAPED_SLASHES);
+        
+        return self::do_get('https://api.appery.io/rest/1/db/collections/QuestionsAnswers/?where=' . urlencode($where), $sessiontoken);
     }
 }
-
-?> 
+?>

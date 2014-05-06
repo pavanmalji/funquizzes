@@ -1,0 +1,28 @@
+<!-- ko if: sessionUser().online -->
+
+<div class="row marketing">
+    <div class="col-lg-12">
+        <div data-bind="template:    {   name: 'quiz-data-questions-template', 
+                                                                    foreach: quizData(),
+                                                                    as: 'quiz'    
+                                                                }">
+        </div>
+    </div>
+</div>
+
+<script type="text/html" id="quiz-data-questions-template">
+    <p>
+    <strong>Question: </strong>
+    <span data-bind="text: quiz.question"></span>&nbsp;?
+  </p>
+  <div data-bind="template: { name: 'quiz-data-answers-template', foreach: quiz.choices, as: 'choice' }"></div>
+</script>
+
+<script type="text/html" id="quiz-data-answers-template">
+    <p>
+        <input name="choice" type="radio" data-bind="value: choice" />
+        <span data-bind="text: choice"></span>
+    </p>
+</script>
+
+<!-- /ko -->
