@@ -65,12 +65,15 @@ var viewModel = {
     currentPageURL: ko.observable('home'),
     currentPageMessage: ko.observable(message),
     activeQuizzes: ko.observable([]),
+    selectedQuiz: ko.observable([]),
     quizData: ko.observable([]),
     
     joinQuiz: function(data, event) {
+        viewModel.selectedQuiz(data);
+
         var postData = {
             joinquiz:true,
-            quiz: data
+            quiz: viewModel.selectedQuiz()
         };
         
         $.post("utils/quizinfo.php", postData,  function(data, status){
@@ -79,6 +82,9 @@ var viewModel = {
                                                         viewModel.currentPageURL('quiz');
                                                     }                                       
                                                 });
+    }, 
+    userAnswer: function(data) {
+        console.log(data);
     }
 };
 
