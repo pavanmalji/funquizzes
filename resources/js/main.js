@@ -67,6 +67,7 @@ var viewModel = {
     activeQuizzes: ko.observable([]),
     selectedQuiz: ko.observable([]),
     quizData: ko.observable([]),
+    quizUserData: ko.observable([]),
     
     joinQuiz: function(data, event) {
         viewModel.selectedQuiz(data);
@@ -78,13 +79,35 @@ var viewModel = {
         
         $.post("utils/quizinfo.php", postData,  function(data, status){
                                                     if(data.length > 0) {
-                                                        viewModel.quizData($.parseJSON(data));
+                                                        var dataArr = $.parseJSON(data);
+                                                        var quizUserDataObj = dataArr[0];
+                                                        quizUserDataObj['userAnswers'] = [];
+                                                        viewModel.quizUserData(quizUserDataObj);
+                                                        viewModel.quizData(dataArr[1]);
                                                         viewModel.currentPageURL('quiz');
                                                     }                                       
                                                 });
     }, 
     userAnswer: function(data) {
-        console.log(data);
+        var userAnswer = {
+                            questionId : data[1]._id,
+                            answer: data[0],
+                            isCorrect: (data[0] === data[1].answer)
+                         };
+                    
+        viewModel.quizUserData().userAnswers.push(userAnswer);
+        
+        var postData = {
+            saveuseranswer: true,
+            quizUserData: viewModel.quizUserData()
+        };
+        
+        $.post("utils/quizinfo.php", postData,  function(data, status){
+                                                    if(data.length > 0) {
+                                                        var data = $.parseJSON(data);
+                                                        console.log(data);
+                                                    }                                       
+                                                });
     }
 };
 
@@ -107,34 +130,6 @@ viewModel.currentPageURL().loadPage = ko.dependentObservable(function() {
             }
         });
 }, viewModel);
-
-function ajaxPost(url, postParams) {
-    $.ajax({
-        url: url,
-        cache: false,
-        type: 'POST',
-        context: document.body,
-        data: { "": JSON.stringify(postParams) },
-        dataType: "json",
-        success: function (data) {
-            user.userquizid = userquizid;
-            setSessionUser();
-            self.joinquizMessage("Quiz Joined Successfully : " + user.userquizid);
-            self.joinquizMessageCSS(getMessageCSS("SUCCESS"));
-        },
-        error: function (xhr, status, error) {
-            var err = eval("(" + xhr.responseText + ")");
-            var message = err.hasOwnProperty("ExceptionMessage") ? err.ExceptionMessage : messageMap['ERR_CONNECTION'];
-            self.joinquizMessage(message);
-            self.joinquizMessageCSS(getMessageCSS("ERROR"));
-        },
-        complete: function (xhr, status, error) {
-            self.joinquizEnable(true);
-            self.joinquizValue(joinquizValue);
-        }
-    });
-}
-        
 
 $(document).on( "click", ".page-link", function(e) {
     e.preventDefault();

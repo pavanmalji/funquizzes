@@ -13,7 +13,9 @@ if(isset($_SESSION['user'])) {
         $response = $apperyclient->get_active_quizzes($_SESSION['apperysession']);
     } else if(isset($_POST['joinquiz'])) {
         $response = $apperyclient->join_quiz($_SESSION['user']['_id'], $_POST['quiz'], $_SESSION['apperysession']);
-    }
+    } else if(isset($_POST['saveuseranswer'])) {
+        $response = $apperyclient->save_user_answer($_POST['quizUserData'], $_SESSION['apperysession']);
+    } 
 }
 print($response);
 ?>

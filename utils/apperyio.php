@@ -120,7 +120,7 @@ class apperyio {
             'quizId' => $quiz['_id']
         );
         
-        $quizdata = json_decode(self::do_post('https://api.appery.io/rest/1/db/collections/QuizzesUsers/', $data, $sessiontoken));
+        $quizdata = array(json_decode(self::do_post('https://api.appery.io/rest/1/db/collections/QuizzesUsers/', $data, $sessiontoken)));
         
         $or = array();
         
@@ -130,7 +130,14 @@ class apperyio {
         
         $where = json_encode(array('$or' => $or), JSON_UNESCAPED_SLASHES);
         
-        return self::do_get('https://api.appery.io/rest/1/db/collections/QuestionsAnswers/?where=' . urlencode($where), $sessiontoken);
+        array_push($quizdata, json_decode(self::do_get('https://api.appery.io/rest/1/db/collections/QuestionsAnswers/?where=' . urlencode($where), $sessiontoken)));
+        
+        return json_encode($quizdata);
+    }
+    
+    function save_user_answer($quizuserdata, $sessiontoken) {
+        $postdata = array('userAnswers' => $quizuserdata['userAnswers']);
+        return json_encode(self::do_post('https://api.appery.io/rest/1/db/collections/QuizzesUsers/' . $quizuserdata['_id'], $postdata, $sessiontoken, 'PUT'));
     }
 }
 ?>
