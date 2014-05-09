@@ -4,9 +4,14 @@
         <img src="resources/images/quiz.gif" style="width:100%;"/>
     </div>
     <div class="col-lg-4">
-        <div style="padding-top: 10px;">
+        <div style="padding-top: 0px;">
             <a class="btn btn-block btn-social btn-google-plus login" href="gplus">
                 <i class="fa fa-google-plus"></i> Sign in with Google
+            </a>
+        </div>
+        <div style="padding-top: 10px;">
+            <a class="btn btn-block btn-social btn-facebook login" href="fb">
+                <i class="fa fa-facebook"></i> Sign in with Facebook
             </a>
         </div>
     </div>
