@@ -31,36 +31,35 @@ if (isset($_GET['logout'])) {
     session_destroy();
     
     // header('Location: https://www.google.com/accounts/Logout?continue=https://appengine.google.com/_ah/logout?continue=http://' . $_SERVER['HTTP_HOST']);
+} else {
+    if (isset($_GET['code'])) {
+        $client->authenticate(); // Authenticate
+        $_SESSION['access_token'] = $client->getAccessToken(); // get the access token here
+        header('Location: http://' . $_SERVER['HTTP_HOST'] . $_SERVER['PHP_SELF']);
+    }
+
+    if (isset($_SESSION['access_token'])) {
+        $client->setAccessToken($_SESSION['access_token']);
+    }
+
+    if ($client->getAccessToken()) {
+        $user = $oauth2->userinfo->get();
+        $_SESSION['access_token'] = $client->getAccessToken();
+    }
+
+    if (isset($user)) {
+        $_SESSION['gplusuer'] = $user;
+
+        $_SESSION['apperysession'] = json_decode($apperyclient->get_session(), true)['sessionToken'];
+
+        $apperyuserid = $apperyclient->set_user($user, 'gplus', $_SESSION['apperysession']);
+        $_SESSION['apperyuserid'] = $apperyuserid;
+
+        $_SESSION['user'] = json_decode($apperyclient->set_user_status($_SESSION['apperyuserid'], true, $_SESSION['apperysession']), true);
+    }
 }
 
-
-if (isset($_GET['code'])) {
-    $client->authenticate(); // Authenticate
-    $_SESSION['access_token'] = $client->getAccessToken(); // get the access token here
-    header('Location: http://' . $_SERVER['HTTP_HOST'] . $_SERVER['PHP_SELF']);
-}
-
-if (isset($_SESSION['access_token'])) {
-    $client->setAccessToken($_SESSION['access_token']);
-}
-
-if ($client->getAccessToken()) {
-    $user = $oauth2->userinfo->get();
-    $_SESSION['access_token'] = $client->getAccessToken();
-}
-
-if (isset($user)) {
-    $_SESSION['gplusuer'] = $user;
-    
-    $_SESSION['apperysession'] = json_decode($apperyclient->get_session(), true)['sessionToken'];
-    
-    $apperyuserid = $apperyclient->set_user($user, 'gplus', $_SESSION['apperysession']);
-    $_SESSION['apperyuserid'] = $apperyuserid;
-    
-    $_SESSION['user'] = json_decode($apperyclient->set_user_status($_SESSION['apperyuserid'], true, $_SESSION['apperysession']), true);
-}
-
-header('Location: http://' . $_SERVER['HTTP_HOST']);
+header('Location: http://funquizzes.azurewebsites.net');
 
 ?>
 

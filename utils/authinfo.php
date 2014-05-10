@@ -21,8 +21,8 @@ if (isset($_GET['gplus'])) {
         $client = new Google_Client();
         $client->setApplicationName("Fun Quizes");
         $client->setScopes(array('https://www.googleapis.com/auth/userinfo.profile')); // set scope during user login
-        $client->setClientId('XXXXXXXXX.apps.googleusercontent.com');
-        $client->setClientSecret('XXXXXXXXX');
+        $client->setClientId('529800480931.apps.googleusercontent.com');
+        $client->setClientSecret('rCODRuDRanlQQUle_zDUySRH');
         $client->setRedirectUri('http://funquizzes.azurewebsites.net/gplus-auth-redirect.php');
         $client->setApprovalPrompt('auto');
         
@@ -42,7 +42,7 @@ if(isset($_GET['fb'])) {
         
         $fbauthurls = array(
                                 'provider' => 'fb',
-                                'login' => $fbhelper->getLoginUrl(),
+                                'login' => $fbhelper->getLoginUrl(array('email')),
                                 'logout' => '/fb-auth-redirect.php?logout'
                              );
          

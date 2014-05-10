@@ -6,7 +6,7 @@ class apperyio {
         $timeout = 5;
         
         $httpheaders = array();
-        array_push($httpheaders, 'X-Appery-Database-Id: XXXXXXXX');
+        array_push($httpheaders, 'X-Appery-Database-Id: 5239bcf9e4b038f7ef2db97b');
         if(!is_null($sessiontoken)) {
             array_push($httpheaders, 'X-Appery-Session-Token: '.$sessiontoken);
         }
@@ -33,7 +33,7 @@ class apperyio {
         $timeout = 5;
         
         $httpheaders = array();
-        array_push($httpheaders, 'X-Appery-Database-Id: XXXXXXXXXX');
+        array_push($httpheaders, 'X-Appery-Database-Id: 5239bcf9e4b038f7ef2db97b');
         array_push($httpheaders, 'Content-Type: application/json');
         if(!is_null($sessiontoken)) {
             array_push($httpheaders, 'X-Appery-Session-Token: '.$sessiontoken);
@@ -95,7 +95,7 @@ class apperyio {
         if(count($existUser) > 0) {
             return $existUser[0]['_id'];
         }
-        
+      
         $data = array(
             'username' => $user['id'],
             'password' => substr( md5(rand()), 0, 7),
@@ -103,6 +103,10 @@ class apperyio {
             'online' => false,
             'acl' => array('*' => array('read' => true, 'write' => true))
         );
+        
+        
+        
+        
         $postdata = array_merge($user, $data);
         $newUser = json_decode(self::do_post("https://api.appery.io/rest/1/db/users", $postdata), true);
         
