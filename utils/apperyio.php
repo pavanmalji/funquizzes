@@ -104,9 +104,6 @@ class apperyio {
             'acl' => array('*' => array('read' => true, 'write' => true))
         );
         
-        
-        
-        
         $postdata = array_merge($user, $data);
         $newUser = json_decode(self::do_post("https://api.appery.io/rest/1/db/users", $postdata), true);
         

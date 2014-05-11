@@ -28,6 +28,7 @@ function deleteSessionCookie() {
 
 var pages = {
     home: 'resources/fragments/home.txt',
+    profile: 'resources/fragments/profile.txt',
     about: 'resources/fragments/about.txt',
     contact: 'resources/fragments/contact.txt',
     player: 'resources/fragments/player.txt',
