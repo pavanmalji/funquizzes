@@ -65,12 +65,70 @@ var message = {
     displayStyle: ko.observable('')
 };
 
+function quizQuestionAnswer(_id, category, question, answer, choices) {
+    return {
+        _id: ko.observable(_id),
+        category: ko.observable(category),
+        question: ko.observable(question),
+        answer: ko.observable(answer),
+        choices: ko.observableArray([]),
+        
+        addChoice: function() {
+            console.log(this.choices.push('Hello'));
+        },
+        removeChoice: function() {
+            conole.log("removeChoice");
+            console.log(this);
+        }
+    };
+}
+
 var viewModel = {
-    
     _dummyObservable: ko.observable(),
     sessionUser: ko.observable([]),
     currentPageURL: ko.observable('home'),
     currentPageMessage: ko.observable(message),
+    
+    newQuizQuestionAnswer: ko.observable(new quizQuestionAnswer("Will be generated.")),
+    quizQuestionsAnswers: ko.observableArray([]),
+    loadQuestionsAnswers: function() {
+        
+    },
+    addQuestionAnswer: function() {
+        var choices = [];
+        if(viewModel._dummyObservable().choice1 !== '') {
+            choices.push(viewModel._dummyObservable().choice1);
+        }
+        if(viewModel._dummyObservable().choice2 !== '') {
+            choices.push(viewModel._dummyObservable().choice2);
+        }
+        if(viewModel._dummyObservable().choice3 !== '') {
+            choices.push(viewModel._dummyObservable().choice3);
+        }
+        if(viewModel._dummyObservable().choice4 !== '') {
+            choices.push(viewModel._dummyObservable().choice4);
+        }
+        
+        var postData = {
+            addquestionanswer:true,
+            questionAnswer: viewModel.newQuizQuestionAnswer()
+        };
+        
+        delete(postData.questionAnswer._id);
+        
+        console.log(postData);
+        
+        $.post("utils/quizinfo.php", postData,  function(data, status){
+                                                    console.log(data);                                    
+                                                });
+        
+    },
+    addChoiceToQuestionAnswer: function(data, event) {
+        viewModel.newQuizQuestionAnswer().addChoice(data);
+    },  
+    removeChoiceFromQuestionAnswer: function(data, event) {
+        console.log(data);
+    },
     activeQuizzes: ko.observable([]),
     selectedQuiz: ko.observable([]),
     quizData: ko.observable([]),

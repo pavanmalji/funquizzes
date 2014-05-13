@@ -15,6 +15,8 @@ if(isset($_SESSION['user'])) {
         $response = $apperyclient->join_quiz($_SESSION['user']['_id'], $_POST['quiz'], $_SESSION['apperysession']);
     } else if(isset($_POST['saveuseranswer'])) {
         $response = $apperyclient->save_user_answer($_POST['quizUserData'], $_SESSION['apperysession']);
+    } else if(isset($_POST['addquestionanswer'])) {
+        $response = $apperyclient->add_question_answer($_POST['questionAnswer'], $_SESSION['apperysession']);
     } 
 }
 print($response);
