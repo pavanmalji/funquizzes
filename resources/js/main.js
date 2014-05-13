@@ -26,6 +26,10 @@ function deleteSessionCookie() {
     $.cookie(sessioncookie, null, { path: '/' });
 }
 
+function getRandomBetween(min, max) {
+    return Math.floor(Math.random() * (max - min + 1) + min);
+}
+
 var pages = {
     home: 'resources/fragments/home.txt',
     profile: 'resources/fragments/profile.txt',
@@ -62,12 +66,15 @@ var message = {
 };
 
 var viewModel = {
+    
+    _dummyObservable: ko.observable(),
     sessionUser: ko.observable([]),
     currentPageURL: ko.observable('home'),
     currentPageMessage: ko.observable(message),
     activeQuizzes: ko.observable([]),
     selectedQuiz: ko.observable([]),
     quizData: ko.observable([]),
+    currentQuestionAnswer: ko.observable([]),
     quizUserData: ko.observable([]),
     
     joinQuiz: function(data, event) {
@@ -84,16 +91,18 @@ var viewModel = {
                                                         var quizUserDataObj = dataArr[0];
                                                         quizUserDataObj['userAnswers'] = [];
                                                         viewModel.quizUserData(quizUserDataObj);
-                                                        viewModel.quizData(dataArr[1]);
+                                                        viewModel.quizData(dataArr[1].sort(function() {return 0.5 - Math.random()}));
+                                                        viewModel.currentQuestionAnswer(viewModel.quizData()[0]);
                                                         viewModel.currentPageURL('quiz');
                                                     }                                       
                                                 });
     }, 
-    userAnswer: function(data) {
+    userAnswer: function(data, event) {
+        
         var userAnswer = {
-                            questionId : data[1]._id,
-                            answer: data[0],
-                            isCorrect: (data[0] === data[1].answer)
+                            questionId : viewModel.currentQuestionAnswer()._id,
+                            answer: data,
+                            isCorrect: (data === viewModel.currentQuestionAnswer().answer)
                          };
                     
         viewModel.quizUserData().userAnswers.push(userAnswer);
@@ -106,31 +115,71 @@ var viewModel = {
         $.post("utils/quizinfo.php", postData,  function(data, status){
                                                     if(data.length > 0) {
                                                         var data = $.parseJSON(data);
-                                                        console.log(data);
+                                                        var nextQuestionIndex = viewModel.quizUserData().userAnswers.length;
+                                                        if(nextQuestionIndex < viewModel.quizData().length) {
+                                                            viewModel.currentQuestionAnswer(viewModel.quizData()[nextQuestionIndex]);
+                                                        } else {
+                                                            viewModel.currentQuestionAnswer(null);
+                                                            viewModel._dummyObservable('Dummy to force computed value refresh.');
+                                                        }
                                                     }                                       
                                                 });
+    },
+    choicesAfterRender: function() { 
+        $('#choices').hide(); $('#choices').slideDown(200); 
     }
 };
 
 viewModel.currentPageURL().loadPage = ko.dependentObservable(function() {
-        $.get(pages[viewModel.currentPageURL()], function (data) {
-            $('#page-content').html(data);
-            var pagecontent = $('#page-content')[0]; 
-            ko.cleanNode(pagecontent);
-            ko.applyBindings(viewModel, pagecontent);
-            
-            postPageLoad();
-            
-            if(viewModel.sessionUser().length === 0 || viewModel.sessionUser()._id === '000000000000000000000000') {
-                $.get( "utils/authinfo.php?user", function( data ) {
-                    if(data.length > 0) {
-                        viewModel.sessionUser($.parseJSON(data));
-                        setSessionCookie(new cooky(viewModel.sessionUser().provider));
-                    }
-                });
-            }
-        });
+    $.get(pages[viewModel.currentPageURL()], function (data) {
+        $('#page-content').hide().html(data).fadeIn(300);
+        var pagecontent = $('#page-content')[0]; 
+        ko.cleanNode(pagecontent);
+        ko.applyBindings(viewModel, pagecontent);
+
+        postPageLoad();
+
+        if(viewModel.sessionUser().length === 0 || viewModel.sessionUser()._id === '000000000000000000000000') {
+            $.get( "utils/authinfo.php?user", function( data ) {
+                if(data.length > 0) {
+                    viewModel.sessionUser($.parseJSON(data));
+                    setSessionCookie(new cooky(viewModel.sessionUser().provider));
+                }
+            });
+        }
+    });
 }, viewModel);
+
+viewModel.quizResult = ko.computed(function() {
+        var total = this.quizData().length;
+        var correct = 0;
+        var wrong = 0;
+        var notanswered = 0;
+        var temp = viewModel._dummyObservable();
+        
+        if(this.quizUserData().userAnswers !== undefined) {
+            $.each(this.quizUserData().userAnswers, function( index, userAnswer ) {
+                console.log(index);
+                console.log(userAnswer);
+                if(userAnswer['isCorrect'] === true) {
+                    correct++;
+                } else {
+                    wrong++;
+                }
+            });
+        }
+        
+        notanswered = total - (correct + wrong);
+        
+        return {
+                    total:  total ,
+                    correct: correct,
+                    wrong: wrong,
+                    notanswered: notanswered
+               };
+                  
+}, viewModel);
+
 
 $(document).on( "click", ".page-link", function(e) {
     e.preventDefault();

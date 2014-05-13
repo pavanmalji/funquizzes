@@ -1,24 +1,35 @@
 <!-- ko if: sessionUser().online -->
 
-    <div class="row marketing">
-        <div class="col-lg-12">
-            <div class="panel panel-info">
-                <div class="panel-heading">
-                    <h3 class="panel-title" data-bind="text: selectedQuiz().name"></h3>
-                </div>
-                <div class="panel-body">
-                    <!-- ko foreach: {data: quizData(), as: 'quiz'} -->
-                        <p><strong data-bind="text: quiz.question"></strong>&nbsp;?</p>
-                        <div class="btn-group-vertical">
-                            <!-- ko foreach: {data: quiz.choices, as: 'choice'} -->
-                                <div class="btn btn-default" data-bind="click: function() { $root.userAnswer(([choice, $parent])) }, text: choice" style="white-space: normal;">
+     
+        <div class="row marketing">
+            <div class="col-lg-12">
+                <div class="panel panel-info">
+                    <div class="panel-heading">
+                        <h3 class="panel-title" data-bind="text: selectedQuiz().name"></h3>
+                    </div>
+                    <div class="panel-body">
+                            <!-- ko if: currentQuestionAnswer() -->
+                                <p><strong data-bind="text: currentQuestionAnswer().question"></strong>&nbsp;?</p>
+                                <div class="btn-group-vertical" id="choices">
+                                    <!-- ko foreach: {data: currentQuestionAnswer().choices, as: 'choice', afterRender: choicesAfterRender} -->
+                                        <div class="btn btn-default" data-bind="click: $root.userAnswer, text: choice" style="white-space: normal;">
+                                        </div>
+                                    <!-- /ko -->
                                 </div>
                             <!-- /ko -->
-                        </div>
-                    <!-- /ko -->
+                            
+                            <!-- ko ifnot: currentQuestionAnswer() --> 
+                                <p><strong>Total: </strong><span data-bind="text: quizResult().total"></span></p>
+                                <p><strong>Correct: </strong><span data-bind="text: quizResult().correct"></span></p>
+                                <p><strong>Wrong: </strong><span data-bind="text: quizResult().wrong"></span></p>
+                                <p><strong>Not Answered: </strong><span data-bind="text: quizResult().notanswered"></span></p>
+                            <!-- /ko -->
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
+    
+
+    
 
 <!-- /ko -->
