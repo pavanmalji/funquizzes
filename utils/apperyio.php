@@ -141,8 +141,9 @@ class apperyio {
         return json_encode(self::do_post('https://api.appery.io/rest/1/db/collections/QuizzesUsers/' . $quizuserdata['_id'], $postdata, $sessiontoken, 'PUT'));
     }
     
-    function add_question_answer($questionanswer, $sessiontoken) {
-        return json_encode(self::do_post('https://api.appery.io/rest/1/db/collections/QuestionsAnswers/', $questionanswer, $sessiontoken, 'POST'));
+    function add_question_answer($userId, $questionanswer, $sessiontoken) {
+        $postdata = array_merge(array('userId' => $userId), $questionanswer);
+        return json_encode(self::do_post('https://api.appery.io/rest/1/db/collections/QuestionsAnswers/', $postdata, $sessiontoken, 'POST'));
     }
 }
     

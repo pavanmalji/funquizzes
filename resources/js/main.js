@@ -56,30 +56,38 @@ var messageMap = {
     login_success : ['You have logged in successfully.', 'alert alert-success'],
     login_error : ['There was an error during login. Please try again.', 'alert alert-danger'],
     logout_success : ['Thank you. Hope to see you again.', 'alert alert-info'],
-    warning: ['Dummy Warning', 'alert alert-warning']
+    warning: ['Dummy Warning', 'alert alert-warning'],
+    question_add_success: ['Question added successfully', 'alert alert-success'],
+    question_add_error: ['Error when adding question.', 'alert alert-danger']
 };
 
 var message = {
     showMessage: ko.observable(false),
     displayText: ko.observable(''),
     displayStyle: ko.observable('')
+    
 };
 
-function quizQuestionAnswer(_id, category, question, answer, choices) {
+function quizAnswerChoice(choice) {
+    return {
+        choice: choice,
+        removeChoice: function() {
+            viewModel.crudQuizQuestionAnswer().choices.remove(this);
+        }
+    }
+}
+
+function quizQuestionAnswer(_id, tags, question, answer, choices) {
     return {
         _id: ko.observable(_id),
-        category: ko.observable(category),
+        tags: ko.observable(tags),
         question: ko.observable(question),
         answer: ko.observable(answer),
-        choices: ko.observableArray([]),
+        choices: ko.observableArray([new quizAnswerChoice(''), new quizAnswerChoice('')]),
         
         addChoice: function() {
-            console.log(this.choices.push('Hello'));
+            viewModel.crudQuizQuestionAnswer().choices.push(new quizAnswerChoice(''));
         },
-        removeChoice: function() {
-            conole.log("removeChoice");
-            console.log(this);
-        }
     };
 }
 
@@ -89,45 +97,41 @@ var viewModel = {
     currentPageURL: ko.observable('home'),
     currentPageMessage: ko.observable(message),
     
-    newQuizQuestionAnswer: ko.observable(new quizQuestionAnswer("Will be generated.")),
+    crudQuizQuestionAnswer: ko.observable(new quizQuestionAnswer("Will be generated.")),
     quizQuestionsAnswers: ko.observableArray([]),
     loadQuestionsAnswers: function() {
         
     },
     addQuestionAnswer: function() {
+
         var choices = [];
-        if(viewModel._dummyObservable().choice1 !== '') {
-            choices.push(viewModel._dummyObservable().choice1);
-        }
-        if(viewModel._dummyObservable().choice2 !== '') {
-            choices.push(viewModel._dummyObservable().choice2);
-        }
-        if(viewModel._dummyObservable().choice3 !== '') {
-            choices.push(viewModel._dummyObservable().choice3);
-        }
-        if(viewModel._dummyObservable().choice4 !== '') {
-            choices.push(viewModel._dummyObservable().choice4);
-        }
         
+        $.each(viewModel.crudQuizQuestionAnswer().choices(), function( index, item ) {
+            choices.push(item.choice);
+        });
+
         var postData = {
             addquestionanswer:true,
-            questionAnswer: viewModel.newQuizQuestionAnswer()
+            questionAnswer: {
+                tags: viewModel.crudQuizQuestionAnswer().tags(),
+                question: viewModel.crudQuizQuestionAnswer().question(),
+                answer: viewModel.crudQuizQuestionAnswer().answer(),
+                choices: choices
+            }
         };
-        
-        delete(postData.questionAnswer._id);
-        
-        console.log(postData);
-        
+
         $.post("utils/quizinfo.php", postData,  function(data, status){
-                                                    console.log(data);                                    
+                                                    var dataArr = $.parseJSON(data);
+                                                    viewModel.currentPageMessage().showMessage(true);
+                                                    if (typeof dataArr['_id'] === 'undefined') {
+                                                        viewModel.currentPageMessage().displayText(messageMap['question_add_success'][0]);
+                                                        viewModel.currentPageMessage().displayStyle(messageMap['question_add_success'][1]);
+                                                    } else {
+                                                        viewModel.currentPageMessage().displayText(messageMap['question_add_error'][0]);
+                                                        viewModel.currentPageMessage().displayStyle(messageMap['question_add_error'][1]);
+                                                    }
                                                 });
         
-    },
-    addChoiceToQuestionAnswer: function(data, event) {
-        viewModel.newQuizQuestionAnswer().addChoice(data);
-    },  
-    removeChoiceFromQuestionAnswer: function(data, event) {
-        console.log(data);
     },
     activeQuizzes: ko.observable([]),
     selectedQuiz: ko.observable([]),
@@ -217,8 +221,6 @@ viewModel.quizResult = ko.computed(function() {
         
         if(this.quizUserData().userAnswers !== undefined) {
             $.each(this.quizUserData().userAnswers, function( index, userAnswer ) {
-                console.log(index);
-                console.log(userAnswer);
                 if(userAnswer['isCorrect'] === true) {
                     correct++;
                 } else {
