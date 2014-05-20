@@ -21,60 +21,89 @@
     </head>
     <body>
         <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <!-- ko ifnot: sessionUser().online -->
+                    <strong class="text-danger pull-right" style="padding-right:5px;" data-bind="text:sessionUser().name"></strong>
+                    <!-- /ko -->
 
-            <div class="header">
-                <div class="row">
-                    <div class="col-lg-12">
-                        <!-- ko ifnot: sessionUser().online -->
-                        <strong class="text-danger pull-right" style="padding-right:5px;" data-bind="text:sessionUser().name"></strong>
-                        <!-- /ko -->
-
-                        <!-- ko if: sessionUser().online -->
-                        <div class="pull-right" style="padding-right:5px;">
-                            <strong class="text-danger" data-bind="text:sessionUser().name"></strong>
-                            <a class="logout" href="#">(logout)</a> |
-                            <a class="page-link" href="profile">Profile</a>
-                        </div>
-                        <!-- /ko -->
+                    <!-- ko if: sessionUser().online -->
+                    <div class="pull-right" style="padding-right:5px;">
+                        <strong class="text-danger" data-bind="text:sessionUser().name"></strong>
+                        <a class="logout" href="#">(Sign out)</a> |
+                        <a class="page-link" href="profile">Profile</a>
                     </div>
-                </div>
-
-                <!-- Fixed navbar -->
-                <div class="navbar navbar-default" role="navigation">
-                    <div class="container">
-                        <div class="navbar-header">
-                            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                                <span class="sr-only">Toggle navigation</span>
-                                <span class="icon-bar"></span>
-                                <span class="icon-bar"></span>
-                                <span class="icon-bar"></span>
-                            </button>
-                            <a class="navbar-brand page-link" href="home">Fun Quizzes</a>
-                        </div>
-                        <div class="collapse navbar-collapse">
-                            <ul class="nav navbar-nav pull-right">
-                                <li><a class="page-link" href="about">About</a></li>
-                                <li><a class="page-link" href="contact">Contact</a></li>
-                            </ul>
-                        </div>
-                    </div>
+                    <!-- /ko -->
                 </div>
             </div>
 
+            <nav class="navbar navbar-default" role="navigation">
+                <div class="container-fluid">
+                    <div class="navbar-header">
+                        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#main-menu">
+                            <span class="sr-only">Toggle navigation</span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                        </button>
+                        <a class="navbar-brand page-link" href="home">Fun Quizzes</a>
+                    </div>
+
+                    <div class="collapse navbar-collapse" id="main-menu">
+                        <ul class="nav navbar-nav">
+                            
+                            <!-- ko if: sessionUser().online -->
+                            <li data-bind="attr: { class: (currentPageURL() === 'playerplayquiz' || currentPageURL() === 'playerwatchquiz' || currentPageURL() === 'playerresults')  ? 'active dropdown' : 'dropdown' }">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Player<b class="caret"></b></a>
+                                <ul class="dropdown-menu">
+                                    <li data-bind="attr: { class: currentPageURL() === 'playerplayquiz'  ? 'active' : '' }"><a class="navbar-link" href="playerplayquiz">Play Quiz</a></li>
+                                    <li data-bind="attr: { class: currentPageURL() === 'playerwatchquiz'  ? 'active' : '' }"><a class="navbar-link" href="playerwatchquiz">Watch Quiz</a></li>
+                                    <li data-bind="attr: { class: currentPageURL() === 'playerresults'  ? 'active' : '' }"><a class="navbar-link" href="playerresults">Quizzes and Results</a></li>
+                                </ul>
+                            </li>
+                            <li data-bind="attr: { class: (currentPageURL() === 'quizmasterprocterquiz' || currentPageURL() === 'quizmasteraddquestions' || currentPageURL() === 'quizmastercreatequiz' || currentPageURL() === 'quizmasterresults')  ? 'active dropdown' : 'dropdown' }">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Quiz Master<b class="caret"></b></a>
+                                <ul class="dropdown-menu">
+                                    <li data-bind="attr: { class: currentPageURL() === 'quizmasterprocterquiz'  ? 'active' : '' }"><a class="navbar-link" href="quizmasterprocterquiz">Procter Quiz</a></li>
+                                    <li data-bind="attr: { class: currentPageURL() === 'quizmasteraddquestions'  ? 'active' : '' }"><a class="navbar-link" href="quizmasteraddquestions">Add Questions</a></li>
+                                    <li data-bind="attr: { class: currentPageURL() === 'quizmastercreatequiz'  ? 'active' : '' }"><a class="navbar-link" href="quizmastercreatequiz">Create Quiz</a></li>
+                                    <li data-bind="attr: { class: currentPageURL() === 'quizmasterresults'  ? 'active' : '' }"><a class="navbar-link" href="quizmasterresults">Quizzes and Results</a></li>
+                                </ul>
+                            </li>
+                            <li data-bind="attr: { class: currentPageURL() === 'comment'  ? 'active' : '' }"><a class="navbar-link" href="comment">Comment</a></li>     
+                            <!-- /ko -->
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+            
+
             <!-- ko if: currentPageMessage().showMessage -->
             <div data-bind="attr: {class: currentPageMessage().displayStyle}">
-                 <a href="#" class="close" data-dismiss="alert">&times;</a>
-                 <span data-bind="text:currentPageMessage().displayText"></span>
+                <a href="#" class="close" data-dismiss="alert">&times;</a>
+                <span data-bind="text:currentPageMessage().displayText"></span>
             </div>
             <!-- /ko -->
 
             <div id="page-content">
             </div>
 
-            <div class="footer">
-                <div class="container">
-                    <p>&copy; NoInk 2014; Some Credit Deserved.</p>
-                </div>
+            <div class="well well-sm">
+                    <div class="btn-group dropup">
+                        <button type="button" class="btn btn-default">
+                            <span class="glyphicon glyphicon-copyright-mark"></span>&nbsp;The Developer
+                        </button>
+                        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                            <span class="caret"></span>
+                            <span class="sr-only">Toggle Dropdown</span>
+                        </button>
+                        <ul class="dropdown-menu">
+                            <li><a href="mailto:pavanmalji@outlook.com"><span class="glyphicon glyphicon-envelope"></span>&nbsp;Contact</a></li>
+                            <li><a href="http://github.com/pavanmalji" target="_blank"><span class="glyphicon glyphicon-gift"></span>&nbsp;Collaborate</a></li> 
+                            <li><a href="http://www.linkedin.com/pub/pavan-malji/5a/4a/486" target="_blank"><span class="glyphicon glyphicon-link"></span>&nbsp;Connect</a></li> 
+                        </ul>
+                    </div>
+                    <a href="help" class="page-link btn btn-default">Help</a>
             </div>
 
         </div> <!-- /container -->

@@ -1,0 +1,31 @@
+<div class="row marketing">
+    <div class="col-lg-6">
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <h4 class="panel-title">Player</h4>
+            </div>
+            <div class="panel-body">
+                <ol>
+                    <li>Select an active quiz and play.</li>
+                    <li>Select an ongoing quiz and watch live update.</li>
+                    <li>View the results of the quizzes you played.</li>
+                 </ol>
+            </div>
+          </div>
+    </div>
+    <div class="col-lg-6">
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <h4 class="panel-title">Quiz Master</h4>
+            </div>
+            <div class="panel-body">
+                <ol>
+                    <li>Procter a Quiz.</li>
+                    <li>Add new quiz questions.</li>
+                    <li>CRUD a quiz.</li>
+                    <li>View the results of the quizzes you Proctered.</li>
+                 </ol>
+            </div>
+          </div>
+    </div>
+</div>

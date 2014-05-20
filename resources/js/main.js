@@ -33,11 +33,16 @@ function getRandomBetween(min, max) {
 var pages = {
     home: 'resources/fragments/home.txt',
     profile: 'resources/fragments/profile.txt',
-    about: 'resources/fragments/about.txt',
-    contact: 'resources/fragments/contact.txt',
-    player: 'resources/fragments/player.txt',
+    help: 'resources/fragments/help.txt',
+    comment: 'resources/fragments/comment.txt',
+    playerplayquiz: 'resources/fragments/playerplayquiz.txt',
+    playerwatchquiz: 'resources/fragments/playerwatchquiz.txt',
+    playerresults: 'resources/fragments/playerresults.txt',
     quiz: 'resources/fragments/quiz.txt',
-    quizmaster: 'resources/fragments/quizmaster.txt'
+    quizmasteraddquestions: 'resources/fragments/quizmasteraddquestions.txt',
+    quizmastercreatequiz: 'resources/fragments/quizmastercreatequiz.txt',
+    quizmasterprocterquiz: 'resources/fragments/quizmasterprocterquiz.txt',
+    quizmasterresults: 'resources/fragments/quizmasterresults.txt'
 };
 
 var authURLS = {
@@ -57,6 +62,7 @@ var messageMap = {
     login_error : ['There was an error during login. Please try again.', 'alert alert-danger'],
     logout_success : ['Thank you. Hope to see you again.', 'alert alert-info'],
     warning: ['Dummy Warning', 'alert alert-warning'],
+    question_add_wait: ['Adding Question. Please Wait.', 'alert alert-info'],
     question_add_success: ['Question added successfully', 'alert alert-success'],
     question_add_error: ['Error when adding question.', 'alert alert-danger']
 };
@@ -96,13 +102,14 @@ var viewModel = {
     sessionUser: ko.observable([]),
     currentPageURL: ko.observable('home'),
     currentPageMessage: ko.observable(message),
-    
     crudQuizQuestionAnswer: ko.observable(new quizQuestionAnswer("Will be generated.")),
     quizQuestionsAnswers: ko.observableArray([]),
     loadQuestionsAnswers: function() {
         
     },
-    addQuestionAnswer: function() {
+    addQuestionAnswer: function() {        
+        viewModel.currentPageMessage().displayText(messageMap['question_add_wait'][0]);
+        viewModel.currentPageMessage().displayStyle(messageMap['question_add_wait'][1]);
 
         var choices = [];
         
@@ -241,6 +248,16 @@ viewModel.quizResult = ko.computed(function() {
 }, viewModel);
 
 
+$(document).on("click", ".navbar a.navbar-link", function(e) {
+    var navbar_toggle = $('.navbar-toggle');
+    if (navbar_toggle.is(':visible')) {
+        navbar_toggle.trigger('click');
+    }
+    e.preventDefault();
+    viewModel.currentPageMessage().showMessage(false);
+    viewModel.currentPageURL($(this).attr('href'));
+});
+
 $(document).on( "click", ".page-link", function(e) {
     e.preventDefault();
     viewModel.currentPageMessage().showMessage(false);
@@ -279,7 +296,7 @@ function postPageLoad() {
     }
     
     switch(viewModel.currentPageURL()) {
-        case 'player' : getActiveQuizzes();
+        case 'playerplayquiz' : getActiveQuizzes();
             break;
     }
 }

@@ -1,44 +1,34 @@
-<!-- ko ifnot: sessionUser().online -->
 <div class="row marketing">
     <div class="col-lg-8">
         <img src="resources/images/quiz.gif" style="width:100%;"/>
     </div>
     <div class="col-lg-4">
-        <div style="padding-top: 0px;">
-            <a class="btn btn-block btn-social btn-google-plus login" href="gplus">
-                <i class="fa fa-google-plus"></i> Sign in with Google
-            </a>
-        </div>
-        <div style="padding-top: 10px;">
-            <a class="btn btn-block btn-social btn-facebook login" href="fb">
-                <i class="fa fa-facebook"></i> Sign in with Facebook
-            </a>
-        </div>
-    </div>
-</div>
-<!-- /ko -->
+        <div class="well well-sm">
+            <div class="alert alert-success"><b>Welcome to Fun Quizzes.</b>
+                <ul>
+                    <li>Create Quizzes</li>
+                    <li>Join & Play</li>
+                    <li>Check Your Stats</li>
+                    <li>Above all, Have Fun!!!</li>
+                </ul>
+            </div>
+        
+        <!-- ko ifnot: sessionUser().online -->
+                <strong>Sign In to Begin</strong>
+                <div style="padding-top: 10px;">
+                    <a class="btn btn-block btn-social btn-google-plus login" href="gplus">
+                        <i class="fa fa-google-plus"></i> Sign in with Google
+                    </a>
+                </div>
+                <div style="padding-top: 10px;">
+                    <a class="btn btn-block btn-social btn-facebook login" href="fb">
+                        <i class="fa fa-facebook"></i> Sign in with Facebook
+                    </a>
+                </div>
 
-<!-- ko if: sessionUser().online -->
-<div class="row marketing">
-    <div class="col-lg-6">
-        <div class="panel panel-info">
-            <div class="panel-heading"><h4>Player</h4></div>
-            <div class="panel-body">
-                <p>1. Select an active quiz and play.</p>
-                <p>2. View your stats.</p>
-                <a class="btn btn-primary page-link" role="button" href="player">Select Quiz</a>
-            </div>
-          </div>
-    </div>
-    <div class="col-lg-6">
-        <div class="panel panel-info">
-            <div class="panel-heading"><h4>Quiz Master</h4></div>
-            <div class="panel-body">
-                <p>1. Procter a Quiz.</p>
-                <p>2. C.R.U.D. a Quiz.</p>              
-                <a class="btn btn-primary page-link" role="button" href="quizmaster">Administer</a>
-            </div>
-          </div>
+        <!-- /ko -->
+
+        </div>
+
     </div>
 </div>
-<!-- /ko -->
