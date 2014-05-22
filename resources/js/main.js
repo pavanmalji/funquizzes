@@ -93,7 +93,7 @@ function quizQuestionAnswer(_id, tags, question, answer, choices) {
         
         addChoice: function() {
             viewModel.crudQuizQuestionAnswer().choices.push(new quizAnswerChoice(''));
-        },
+        }
     };
 }
 
