@@ -1,9 +1,9 @@
 <div class="row marketing">
     
-    <div class="col-lg-4">
+    <div class="col-sm-6">
             <ul class="list-group">
                 <li class="list-group-item list-group-item-info">
-                    <h4 class="list-group-item-heading">Welcome <span data-bind="text:sessionUser().name"></span>&nbsp;!!!</h4>
+                    <h4 class="list-group-item-heading">Welcome <span data-bind="text:sessionUser().name"></span>&nbsp;!</h4>
                 </li>
                 <!-- ko if: sessionUser().online -->
                     <li class="list-group-item">
@@ -28,7 +28,7 @@
             </ul>
         
     </div>
-    <div class="col-lg-4">
+    <div class="col-sm-6">
         <ul class="list-group">
             <li class="list-group-item list-group-item-info">
                 <h4 class="list-group-item-heading">Features</h4>
