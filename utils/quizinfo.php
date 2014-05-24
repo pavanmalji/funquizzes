@@ -2,6 +2,8 @@
 
 require_once 'apperyio.php';
 
+header('Content-Type: application/json');
+
 $apperyclient = new apperyio();
 
 session_start();
@@ -17,7 +19,11 @@ if(isset($_SESSION['user'])) {
         $response = $apperyclient->save_user_answer($_POST['quizUserData'], $_SESSION['apperysession']);
     } else if(isset($_POST['addquestionanswer'])) {
         $response = $apperyclient->add_question_answer($_SESSION['user']['_id'], $_POST['questionAnswer'], $_SESSION['apperysession']);
-    } 
+    } else if(isset($_GET['questionsanswers'])) {
+        $response = $apperyclient->get_questions_answers($_SESSION['user']['_id'], $_SESSION['apperysession']);
+    } else if(isset($_POST['createquiz'])) {
+        $response = $apperyclient->create_quiz($_SESSION['user']['_id'], $_POST['quiz'], $_SESSION['apperysession']);
+    }
 }
 print($response);
 ?>

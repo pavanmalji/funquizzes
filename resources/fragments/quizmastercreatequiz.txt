@@ -7,7 +7,30 @@
                     <h4 class="panel-title">Quiz Master - Create Quiz</h4>
                 </div>
                 <div class="panel-body">
-                        
+                    <div class="input-group">
+                        <span class="input-group-addon">*</span>
+                        <input type="text" class="form-control" placeholder="Name" data-bind="value:crudQuiz().name" />
+                    </div>
+                    <div class="input-group">
+                        <span class="input-group-addon">*</span>
+                        <input type="text" class="form-control" placeholder="Description" data-bind="value:crudQuiz().description" />
+                    </div>
+                    <div class="input-group">
+                        <span class="input-group-addon">*</span>
+                        <span class="form-control">Select Questions: </span>
+                    </div>
+                    <div class="well well-sm">
+                        <ul class="list-group" data-bind="foreach: quizQuestionsAnswers()">
+                            <li class="list-group-item">
+                                    <span class="badge">
+                                        <input type="checkbox" data-bind="value: _id, checked: viewModel.crudQuiz().questionids">
+                                    </span>
+                                    <p class="list-group-item-heading"><span data-bind="text: question"></span>&nbsp;?</p>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <a class="btn btn-success" role="button" data-bind="click: createQuiz">Create Quiz</a>
                 </div>
             </div>
         </div>

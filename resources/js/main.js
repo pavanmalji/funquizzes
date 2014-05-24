@@ -35,10 +35,10 @@ var pages = {
     profile: 'resources/fragments/profile.txt',
     help: 'resources/fragments/help.txt',
     comment: 'resources/fragments/comment.txt',
-    playerplayquiz: 'resources/fragments/playerplayquiz.txt',
+    playerselectquiz: 'resources/fragments/playerselectquiz.txt',
     playerwatchquiz: 'resources/fragments/playerwatchquiz.txt',
     playerresults: 'resources/fragments/playerresults.txt',
-    quiz: 'resources/fragments/quiz.txt',
+    playerplayquiz: 'resources/fragments/playerplayquiz.txt',
     quizmasteraddquestions: 'resources/fragments/quizmasteraddquestions.txt',
     quizmastercreatequiz: 'resources/fragments/quizmastercreatequiz.txt',
     quizmasterprocterquiz: 'resources/fragments/quizmasterprocterquiz.txt',
@@ -64,7 +64,10 @@ var messageMap = {
     warning: ['Dummy Warning', 'alert alert-warning'],
     question_add_wait: ['Adding Question. Please Wait.', 'alert alert-info'],
     question_add_success: ['Question added successfully', 'alert alert-success'],
-    question_add_error: ['Error when adding question.', 'alert alert-danger']
+    question_add_error: ['Error adding question.', 'alert alert-danger'],
+    quiz_create_wait: ['Creating Quiz. Please Wait.', 'alert alert-info'],
+    quiz_create_success: ['Quiz created successfully', 'alert alert-success'],
+    quiz_create_error: ['Error creating quiz.', 'alert alert-danger']
 };
 
 var message = {
@@ -74,13 +77,21 @@ var message = {
     
 };
 
+function quiz() {
+    return {
+        name: ko.observable(),
+        description: ko.observable(),
+        questionids: ko.observableArray([])
+    };
+}
+
 function quizAnswerChoice(choice) {
     return {
         choice: choice,
         removeChoice: function() {
             viewModel.crudQuizQuestionAnswer().choices.remove(this);
         }
-    }
+    };
 }
 
 function quizQuestionAnswer(_id, tags, question, answer, choices) {
@@ -102,12 +113,12 @@ var viewModel = {
     sessionUser: ko.observable([]),
     currentPageURL: ko.observable('home'),
     currentPageMessage: ko.observable(message),
-    crudQuizQuestionAnswer: ko.observable(new quizQuestionAnswer("Will be generated.")),
+    
     quizQuestionsAnswers: ko.observableArray([]),
-    loadQuestionsAnswers: function() {
-        
-    },
-    addQuestionAnswer: function() {        
+    crudQuizQuestionAnswer: ko.observable(new quizQuestionAnswer("Will be generated.")),
+    
+    addQuestionAnswer: function() {      
+        viewModel.currentPageMessage().showMessage(true);
         viewModel.currentPageMessage().displayText(messageMap['question_add_wait'][0]);
         viewModel.currentPageMessage().displayStyle(messageMap['question_add_wait'][1]);
 
@@ -128,9 +139,7 @@ var viewModel = {
         };
 
         $.post("utils/quizinfo.php", postData,  function(data, status){
-                                                    var dataArr = $.parseJSON(data);
-                                                    viewModel.currentPageMessage().showMessage(true);
-                                                    if (typeof dataArr['_id'] === 'undefined') {
+                                                    if (data._id !== undefined) {
                                                         viewModel.currentPageMessage().displayText(messageMap['question_add_success'][0]);
                                                         viewModel.currentPageMessage().displayStyle(messageMap['question_add_success'][1]);
                                                     } else {
@@ -140,6 +149,38 @@ var viewModel = {
                                                 });
         
     },
+    
+    crudQuiz: ko.observable(new quiz()),
+    createQuiz: function() {
+        viewModel.currentPageMessage().showMessage(true);
+        viewModel.currentPageMessage().displayText(messageMap['quiz_create_wait'][0]);
+        viewModel.currentPageMessage().displayStyle(messageMap['quiz_create_wait'][1]);
+        
+        var questionids = [];
+        
+        $.each(viewModel.crudQuiz().questionids(), function( index, item ) {
+            questionids.push(item);
+        });
+        
+        var postData = {
+            createquiz:true,
+            quiz: {
+                    name: viewModel.crudQuiz().name(),
+                    description: viewModel.crudQuiz().description(),
+                    questionids: questionids
+            }
+        };
+  
+        $.post("utils/quizinfo.php", postData,  function(data, status){
+                                                    if (data._id !== undefined) {
+                                                        viewModel.currentPageMessage().displayText(messageMap['quiz_create_success'][0]);
+                                                        viewModel.currentPageMessage().displayStyle(messageMap['quiz_create_success'][1]);
+                                                    } else {
+                                                        viewModel.currentPageMessage().displayText(messageMap['quiz_create_error'][0]);
+                                                        viewModel.currentPageMessage().displayStyle(messageMap['quiz_create_error'][1]);
+                                                    }
+                                                });
+    },
     activeQuizzes: ko.observable([]),
     selectedQuiz: ko.observable([]),
     quizData: ko.observable([]),
@@ -148,31 +189,36 @@ var viewModel = {
     
     joinQuiz: function(data, event) {
         viewModel.selectedQuiz(data);
-
+      
         var postData = {
             joinquiz:true,
             quiz: viewModel.selectedQuiz()
         };
         
         $.post("utils/quizinfo.php", postData,  function(data, status){
-                                                    if(data.length > 0) {
-                                                        var dataArr = $.parseJSON(data);
-                                                        var quizUserDataObj = dataArr[0];
+                                                    if(data !== undefined && data.length > 0) {
+                                                        var quizUserDataObj = data[0];
                                                         quizUserDataObj['userAnswers'] = [];
                                                         viewModel.quizUserData(quizUserDataObj);
-                                                        viewModel.quizData(dataArr[1].sort(function() {return 0.5 - Math.random()}));
+                                                        viewModel.quizData(data[1].sort(function() {return 0.5 - Math.random();}));
                                                         viewModel.currentQuestionAnswer(viewModel.quizData()[0]);
-                                                        viewModel.currentPageURL('quiz');
-                                                    }                                       
+                                                        viewModel.currentPageURL('playerplayquiz');
+                                                    } else {
+                                                        // ToDo: Error joining quiz
+                                                    }                                      
                                                 });
     }, 
     userAnswer: function(data, event) {
+        $('#choices .btn').addClass('disabled');
         
         var userAnswer = {
                             questionId : viewModel.currentQuestionAnswer()._id,
                             answer: data,
                             isCorrect: (data === viewModel.currentQuestionAnswer().answer)
                          };
+                         
+        $('#quiz-question').removeClass('panel-info');
+        $('#quiz-question').addClass(userAnswer.isCorrect ? 'panel-success' : 'panel-danger');
                     
         viewModel.quizUserData().userAnswers.push(userAnswer);
         
@@ -182,8 +228,7 @@ var viewModel = {
         };
         
         $.post("utils/quizinfo.php", postData,  function(data, status){
-                                                    if(data.length > 0) {
-                                                        var data = $.parseJSON(data);
+                                                    if(data !== undefined) {
                                                         var nextQuestionIndex = viewModel.quizUserData().userAnswers.length;
                                                         if(nextQuestionIndex < viewModel.quizData().length) {
                                                             viewModel.currentQuestionAnswer(viewModel.quizData()[nextQuestionIndex]);
@@ -191,7 +236,12 @@ var viewModel = {
                                                             viewModel.currentQuestionAnswer(null);
                                                             viewModel._dummyObservable('Dummy to force computed value refresh.');
                                                         }
-                                                    }                                       
+                                                        
+                                                        $('#quiz-question').removeClass(userAnswer.isCorrect ? 'panel-success' : 'panel-danger');
+                                                        $('#quiz-question').addClass('panel-info');
+                                                    } else {
+                                                        // ToDo: Error saving user answer
+                                                    }                                 
                                                 });
     },
     choicesAfterRender: function() { 
@@ -210,8 +260,8 @@ viewModel.currentPageURL().loadPage = ko.dependentObservable(function() {
 
         if(viewModel.sessionUser().length === 0 || viewModel.sessionUser()._id === '000000000000000000000000') {
             $.get( "utils/authinfo.php?user", function( data ) {
-                if(data.length > 0) {
-                    viewModel.sessionUser($.parseJSON(data));
+                if(data !== undefined) {
+                    viewModel.sessionUser(data);
                     setSessionCookie(new cooky(viewModel.sessionUser().provider));
                 }
             });
@@ -280,10 +330,22 @@ $(document).on( "click", ".logout", function(e) {
 
 function getActiveQuizzes() {
     $.get( "utils/quizinfo.php?activequizzes", function( data ) {
-            if(data.length > 0) {
-                viewModel.activeQuizzes($.parseJSON(data));
+            if(data !== undefined && data.length > 0) {
+                viewModel.activeQuizzes(data);
+            } else {
+                // ToDo: Error Loading Active Quizzes
             }
     });
+}
+
+function getQuestionsAnswers() {
+    $.get( "utils/quizinfo.php?questionsanswers", function( data ) {
+        if(data !== undefined && data.length > 0) {
+            viewModel.quizQuestionsAnswers(data);
+        } else {
+            // ToDo: Error Loading Questions Answers
+        }
+    }); 
 }
 
 function postPageLoad() {
@@ -296,7 +358,9 @@ function postPageLoad() {
     }
     
     switch(viewModel.currentPageURL()) {
-        case 'playerplayquiz' : getActiveQuizzes();
+        case 'playerselectquiz' : getActiveQuizzes();
+            break;
+        case 'quizmastercreatequiz' : getQuestionsAnswers();
             break;
     }
 }
@@ -304,8 +368,7 @@ function postPageLoad() {
 function initAuthURLS() {
     for(var providerKey in authURLS) {
         $.get( "utils/authinfo.php?" + providerKey + "&authurls", function( data ) {
-            if(data.length > 0) {
-                data = $.parseJSON(data);
+            if(data !== undefined) {
                 authURLS[data.provider].login = data.login;
                 authURLS[data.provider].logout = data.logout;
             }
@@ -343,8 +406,17 @@ function initSessionCookie() {
     }
 }
 
+function facebookLoginRedirectURIBugFix() {
+    if (window.location.hash === '#_=_') {
+        window.location.hash = ''; // for older browsers, leaves a # behind
+        history.pushState('', document.title, window.location.pathname); // nice and clean
+        event.preventDefault(); // no page reload
+    }
+}
+
 function initApp() {
     initSessionCookie();
     initAuthURLS();
     ko.applyBindings(viewModel);
+    facebookLoginRedirectURIBugFix();
 }

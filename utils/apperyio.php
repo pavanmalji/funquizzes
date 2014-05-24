@@ -133,17 +133,27 @@ class apperyio {
         
         array_push($quizdata, json_decode(self::do_get('https://api.appery.io/rest/1/db/collections/QuestionsAnswers/?where=' . urlencode($where), $sessiontoken)));
         
-        return json_encode($quizdata);
+        return json_encode($quizdata, JSON_UNESCAPED_SLASHES);
     }
     
     function save_user_answer($quizuserdata, $sessiontoken) {
         $postdata = array('userAnswers' => $quizuserdata['userAnswers']);
-        return json_encode(self::do_post('https://api.appery.io/rest/1/db/collections/QuizzesUsers/' . $quizuserdata['_id'], $postdata, $sessiontoken, 'PUT'));
+        return self::do_post('https://api.appery.io/rest/1/db/collections/QuizzesUsers/' . $quizuserdata['_id'], $postdata, $sessiontoken, 'PUT');
     }
     
     function add_question_answer($userId, $questionanswer, $sessiontoken) {
         $postdata = array_merge(array('userId' => $userId), $questionanswer);
-        return json_encode(self::do_post('https://api.appery.io/rest/1/db/collections/QuestionsAnswers/', $postdata, $sessiontoken, 'POST'));
+        return self::do_post('https://api.appery.io/rest/1/db/collections/QuestionsAnswers/', $postdata, $sessiontoken, 'POST');
+    }
+    
+    function get_questions_answers($userId, $sessiontoken) {
+        $where = array ('userId' => $userId);
+        return self::do_get('https://api.appery.io/rest/1/db/collections/QuestionsAnswers/?where=' . urlencode(json_encode($where, JSON_UNESCAPED_SLASHES)), $sessiontoken);
+    }
+    
+    function create_quiz($userId, $quiz, $sessiontoken) {
+        $postdata = array_merge(array('quizmaster' => $userId), $quiz);
+        return self::do_post('https://api.appery.io/rest/1/db/collections/Quizzes/', $postdata, $sessiontoken, 'POST');
     }
 }
     

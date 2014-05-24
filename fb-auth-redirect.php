@@ -81,6 +81,6 @@ if (isset($_GET['logout'])) {
     }
 }
 
-header('Location: http://funquizzes.azurewebsites.net/');
+header('Location: http://funquizzes.azurewebsites.net');
 
 ?>

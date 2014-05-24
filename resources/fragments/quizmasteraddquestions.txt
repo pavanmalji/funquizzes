@@ -32,7 +32,7 @@
                             </li>
                         </ul>
 
-                        <a class="btn btn-success" role="button" data-bind="click: addQuestionAnswer" href="player">Save Question</a>
+                        <a class="btn btn-success" role="button" data-bind="click: addQuestionAnswer">Save Question</a>
                 </div>
             </div>
         </div>

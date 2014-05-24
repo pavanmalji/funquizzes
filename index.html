@@ -53,10 +53,10 @@
                         <ul class="nav navbar-nav">
                             
                             <!-- ko if: sessionUser().online -->
-                            <li data-bind="attr: { class: (currentPageURL() === 'playerplayquiz' || currentPageURL() === 'playerwatchquiz' || currentPageURL() === 'playerresults')  ? 'active dropdown' : 'dropdown' }">
+                            <li data-bind="attr: { class: (currentPageURL() === 'playerselectquiz' || currentPageURL() === 'playerwatchquiz' || currentPageURL() === 'playerresults')  ? 'active dropdown' : 'dropdown' }">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">Player<b class="caret"></b></a>
                                 <ul class="dropdown-menu">
-                                    <li data-bind="attr: { class: currentPageURL() === 'playerplayquiz'  ? 'active' : '' }"><a class="navbar-link" href="playerplayquiz">Play Quiz</a></li>
+                                    <li data-bind="attr: { class: currentPageURL() === 'playerselectquiz'  ? 'active' : '' }"><a class="navbar-link" href="playerselectquiz">Play Quiz</a></li>
                                     <li data-bind="attr: { class: currentPageURL() === 'playerwatchquiz'  ? 'active' : '' }"><a class="navbar-link" href="playerwatchquiz">Watch Quiz</a></li>
                                     <li data-bind="attr: { class: currentPageURL() === 'playerresults'  ? 'active' : '' }"><a class="navbar-link" href="playerresults">Quizzes and Results</a></li>
                                 </ul>
@@ -72,6 +72,8 @@
                             </li>
                             <li data-bind="attr: { class: currentPageURL() === 'comment'  ? 'active' : '' }"><a class="navbar-link" href="comment">Comment</a></li>     
                             <!-- /ko -->
+                            
+                            <li data-bind="attr: { class: currentPageURL() === 'help'  ? 'active' : '' }"><a class="navbar-link" href="help">Help</a></li>
                         </ul>
                     </div>
                 </div>
@@ -99,11 +101,10 @@
                         </button>
                         <ul class="dropdown-menu">
                             <li><a href="mailto:pavanmalji@outlook.com"><span class="glyphicon glyphicon-envelope"></span>&nbsp;Contact</a></li>
-                            <li><a href="http://github.com/pavanmalji" target="_blank"><span class="glyphicon glyphicon-gift"></span>&nbsp;Collaborate</a></li> 
                             <li><a href="http://www.linkedin.com/pub/pavan-malji/5a/4a/486" target="_blank"><span class="glyphicon glyphicon-link"></span>&nbsp;Connect</a></li> 
+                            <li><a href="http://github.com/pavanmalji" target="_blank"><span class="glyphicon glyphicon-gift"></span>&nbsp;Collaborate</a></li> 
                         </ul>
                     </div>
-                    <a href="help" class="page-link btn btn-default">Help</a>
             </div>
 
         </div> <!-- /container -->

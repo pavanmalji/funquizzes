@@ -6,6 +6,8 @@ require_once '../vendor/Facebook/FacebookSession.php';
 require_once '../vendor/Facebook/FacebookSDKException.php';
 require_once '../vendor/Facebook/FacebookRequest.php';
 
+header('Content-Type: application/json');
+
 $guest = array(
                 '_id' => '000000000000000000000000',
                 'name' => 'Guest',
