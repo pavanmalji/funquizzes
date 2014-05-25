@@ -155,6 +155,11 @@ class apperyio {
         $postdata = array_merge(array('quizmaster' => $userId), $quiz);
         return self::do_post('https://api.appery.io/rest/1/db/collections/Quizzes/', $postdata, $sessiontoken, 'POST');
     }
+    
+    function add_comment($userId, $comment, $sessiontoken) {
+        $postdata = array('userId' => $userId, 'comment' => $comment);
+        return self::do_post('https://api.appery.io/rest/1/db/collections/Comments/', $postdata, $sessiontoken, 'POST');
+    }
 }
     
 ?>

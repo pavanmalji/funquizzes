@@ -34,7 +34,7 @@ var pages = {
     home: 'resources/fragments/home.txt',
     profile: 'resources/fragments/profile.txt',
     help: 'resources/fragments/help.txt',
-    comment: 'resources/fragments/comment.txt',
+    comments: 'resources/fragments/comments.txt',
     playerselectquiz: 'resources/fragments/playerselectquiz.txt',
     playerwatchquiz: 'resources/fragments/playerwatchquiz.txt',
     playerresults: 'resources/fragments/playerresults.txt',
@@ -65,9 +65,11 @@ var messageMap = {
     question_add_wait: ['Adding Question. Please Wait.', 'alert alert-info'],
     question_add_success: ['Question added successfully', 'alert alert-success'],
     question_add_error: ['Error adding question.', 'alert alert-danger'],
+    user_answers_save_error: ['Error saving answer. Please try again.', 'alert alert-warning'],
     quiz_create_wait: ['Creating Quiz. Please Wait.', 'alert alert-info'],
     quiz_create_success: ['Quiz created successfully', 'alert alert-success'],
-    quiz_create_error: ['Error creating quiz.', 'alert alert-danger']
+    quiz_create_error: ['Error creating quiz.', 'alert alert-danger'],
+    user_comment_add_error: ['Error adding comment. Please try again.', 'alert alert-danger'],
 };
 
 var message = {
@@ -188,6 +190,7 @@ var viewModel = {
     quizUserData: ko.observable([]),
     
     joinQuiz: function(data, event) {
+        
         viewModel.selectedQuiz(data);
       
         var postData = {
@@ -209,7 +212,7 @@ var viewModel = {
                                                 });
     }, 
     userAnswer: function(data, event) {
-        $('#choices .btn').addClass('disabled');
+        viewModel.currentPageMessage().showMessage(false);
         
         var userAnswer = {
                             questionId : viewModel.currentQuestionAnswer()._id,
@@ -217,6 +220,7 @@ var viewModel = {
                             isCorrect: (data === viewModel.currentQuestionAnswer().answer)
                          };
                          
+        $('#choices .btn').addClass('disabled');
         $('#quiz-question').removeClass('panel-info');
         $('#quiz-question').addClass(userAnswer.isCorrect ? 'panel-success' : 'panel-danger');
                     
@@ -237,15 +241,44 @@ var viewModel = {
                                                             viewModel._dummyObservable('Dummy to force computed value refresh.');
                                                         }
                                                         
+                                                        $('#choices .btn').removeClass('disabled');
                                                         $('#quiz-question').removeClass(userAnswer.isCorrect ? 'panel-success' : 'panel-danger');
                                                         $('#quiz-question').addClass('panel-info');
                                                     } else {
-                                                        // ToDo: Error saving user answer
+                                                        viewModel.quizUserData().userAnswers.pop();
+                                                        
+                                                        $('#choices .btn').removeClass('disabled');
+                                                        $('#quiz-question').removeClass(userAnswer.isCorrect ? 'panel-success' : 'panel-danger');
+                                                        $('#quiz-question').addClass('panel-info');
+                                                        
+                                                        viewModel.currentPageMessage().showMessage(true);
+                                                        viewModel.currentPageMessage().displayText(messageMap['user_answers_save_error'][0]);
+                                                        viewModel.currentPageMessage().displayStyle(messageMap['user_answers_save_error'][1]);
                                                     }                                 
                                                 });
     },
     choicesAfterRender: function() { 
         $('#choices').hide(); $('#choices').slideDown(200); 
+    },
+    crudComment: ko.observable(),
+    usersComments: ko.observable(),
+    addComment: function() {
+        viewModel.currentPageMessage().showMessage(false);
+        
+        var postData = {
+            addcomment: true,
+            comment: viewModel.crudComment()
+        };
+        
+        $.post("utils/quizinfo.php", postData,  function(data, status){
+                                                    if (data._id !== undefined) {
+                                                        // To Do : Add comment to the list of comments.
+                                                    } else {
+                                                        viewModel.currentPageMessage().showMessage(true);
+                                                        viewModel.currentPageMessage().displayText(messageMap['user_comment_add_error'][0]);
+                                                        viewModel.currentPageMessage().displayStyle(messageMap['user_comment_add_error'][1]);
+                                                    }                                 
+                                                });
     }
 };
 

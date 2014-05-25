@@ -23,6 +23,8 @@ if(isset($_SESSION['user'])) {
         $response = $apperyclient->get_questions_answers($_SESSION['user']['_id'], $_SESSION['apperysession']);
     } else if(isset($_POST['createquiz'])) {
         $response = $apperyclient->create_quiz($_SESSION['user']['_id'], $_POST['quiz'], $_SESSION['apperysession']);
+    } else if(isset($_POST['addcomment'])) {
+        $response = $apperyclient->add_comment($_SESSION['user']['_id'], $_POST['comment'], $_SESSION['apperysession']);
     }
 }
 print($response);
