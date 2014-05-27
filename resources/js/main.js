@@ -261,7 +261,8 @@ var viewModel = {
         $('#choices').hide(); $('#choices').slideDown(200); 
     },
     crudComment: ko.observable(),
-    usersComments: ko.observable(),
+    usersComments: ko.observableArray([]),
+    hasMoreComments: ko.observable(true),
     addComment: function() {
         viewModel.currentPageMessage().showMessage(false);
         
@@ -273,6 +274,20 @@ var viewModel = {
         $.post("utils/quizinfo.php", postData,  function(data, status){
                                                     if (data._id !== undefined) {
                                                         // To Do : Add comment to the list of comments.
+                                                        var userComment = {
+                                                            _id: data._id,
+                                                            comment: viewModel.crudComment(),
+                                                            userId: viewModel.sessionUser()._id,
+                                                            userInfo : {
+                                                              name: viewModel.sessionUser().name,
+                                                              picture: viewModel.sessionUser().picture,
+                                                              link: viewModel.sessionUser().link
+                                                            },
+                                                            _createdAt : data._createdAt,
+                                                            _updatedAt : data._createdAt,
+                                                        };
+                                                        viewModel.usersComments.unshift(userComment);
+                                                        viewModel.crudComment('');
                                                     } else {
                                                         viewModel.currentPageMessage().showMessage(true);
                                                         viewModel.currentPageMessage().displayText(messageMap['user_comment_add_error'][0]);
@@ -381,6 +396,21 @@ function getQuestionsAnswers() {
     }); 
 }
 
+function getComments(limit, skip) {
+    var limit = 5;
+    var skip = viewModel.usersComments().length;
+    $.get( "utils/quizinfo.php?comments&limit=" + limit + "&skip=" + skip, function( data ) {
+        if(data !== undefined) {
+            $.each(data, function( index, item ) {
+                viewModel.usersComments.push(item);
+            });
+            viewModel.hasMoreComments(data.length === limit);
+        } else {
+            // ToDo: Error Loading Questions Answers
+        }
+    }); 
+}
+
 function postPageLoad() {
     if(!isSessionAlive() && !isAnonymousSession()) {
         var index = getSessionCookie().provider;
@@ -394,6 +424,8 @@ function postPageLoad() {
         case 'playerselectquiz' : getActiveQuizzes();
             break;
         case 'quizmastercreatequiz' : getQuestionsAnswers();
+            break;
+        case 'comments' : getComments();
             break;
     }
 }

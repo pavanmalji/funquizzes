@@ -13,15 +13,27 @@
                         <a class="btn btn-success" role="button" data-bind="click: addComment">Add Comment</a>
                     </div>
 
-                    <div class="media">
-                      <a class="pull-left" href="#">
-                        <img class="media-object" data-bind="attr: { src: sessionUser().picture, alt: sessionUser().name}" style="width:64px;">
-                      </a>
-                      <div class="media-body">
-                        <h4 class="media-heading">Comment from XYZ</h4>
-                        <p>This is a test Comment.</p>
-                      </div>
-                    </div>                
+                    <div data-bind="template:    {   name: 'comments-template', 
+                                                                        foreach: usersComments(),
+                                                                        as: 'userComment'    
+                                                                    }">
+                    </div>
+
+                    <script type="text/html" id="comments-template">
+                        <div class="media">
+                            <a class="pull-left" href="userComment.userInfo.link" target="_blank">
+                              <img class="media-object" data-bind="attr: { src: userComment.userInfo.picture, alt: userComment.userInfo.name}" style="width:64px;">
+                            </a>
+                            <div class="media-body">
+                              <h4 class="media-heading" data-bind="text: userComment.userInfo.name"></h4>
+                              <strong data-bind="text: moment.utc(userComment._createdAt).fromNow()"></strong>
+                              <p data-bind="text:userComment.comment"></p>
+                            </div>
+                        </div> 
+                    </script>
+                    
+                    <a class="btn btn-primary" role="button" data-bind="visible:hasMoreComments, click: getComments">Load More Comments</a>
+                    
                 </div>
               </div>
         </div>

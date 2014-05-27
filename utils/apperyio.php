@@ -156,8 +156,20 @@ class apperyio {
         return self::do_post('https://api.appery.io/rest/1/db/collections/Quizzes/', $postdata, $sessiontoken, 'POST');
     }
     
-    function add_comment($userId, $comment, $sessiontoken) {
-        $postdata = array('userId' => $userId, 'comment' => $comment);
+    function get_comments($limit, $skip, $sessiontoken) {
+        return self::do_get('https://api.appery.io/rest/1/db/collections/Comments/?limit=' . urlencode($limit) . '&skip=' . urlencode($skip) . '&sort=' . urlencode('-_createdAt'), $sessiontoken);
+    }
+    
+    function add_comment($user, $comment, $sessiontoken) {
+      
+        $postdata = array(  'userId' => $user['_id'], 
+                            'comment' => $comment, 
+                            'userInfo' => array('name' => $user['name'], 
+                                                'picture' => $user['picture'], 
+                                                'link' => $user['link']
+                                                )
+                        );
+        
         return self::do_post('https://api.appery.io/rest/1/db/collections/Comments/', $postdata, $sessiontoken, 'POST');
     }
 }

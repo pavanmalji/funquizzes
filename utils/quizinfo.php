@@ -23,8 +23,12 @@ if(isset($_SESSION['user'])) {
         $response = $apperyclient->get_questions_answers($_SESSION['user']['_id'], $_SESSION['apperysession']);
     } else if(isset($_POST['createquiz'])) {
         $response = $apperyclient->create_quiz($_SESSION['user']['_id'], $_POST['quiz'], $_SESSION['apperysession']);
+    } if(isset($_GET['comments'])) {
+        $limit = (isset($_GET['limit'])) ? $_GET['limit'] : 5;
+        $skip = (isset($_GET['skip'])) ? $_GET['skip'] : 0;
+        $response = $apperyclient->get_comments($limit, $skip, $_SESSION['apperysession']);
     } else if(isset($_POST['addcomment'])) {
-        $response = $apperyclient->add_comment($_SESSION['user']['_id'], $_POST['comment'], $_SESSION['apperysession']);
+        $response = $apperyclient->add_comment($_SESSION['user'], $_POST['comment'], $_SESSION['apperysession']);
     }
 }
 print($response);
