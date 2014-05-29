@@ -10,7 +10,7 @@
                     <div class="well well-sm">
                         <textarea rows="4" maxlength="140" style="width:100%; resize: none;" placeholder="Your comment" data-bind="value:crudComment">
                         </textarea>
-                        <a class="btn btn-success" role="button" data-bind="click: addComment">Add Comment</a>
+                        <input type="button" value="Add Comment" class="btn btn-success" data-bind="enable: crudCommentLength() > 0, click: addComment" />
                     </div>
 
                     <div data-bind="template:    {   name: 'comments-template', 
@@ -31,7 +31,7 @@
                             </div>
                         </div> 
                     </script>
-                    
+                    <hr/>
                     <a class="btn btn-primary" role="button" data-bind="visible:hasMoreComments, click: getComments">Load More Comments</a>
                     
                 </div>

@@ -240,21 +240,23 @@ var viewModel = {
                                                             viewModel.currentQuestionAnswer(null);
                                                             viewModel._dummyObservable('Dummy to force computed value refresh.');
                                                         }
-                                                        
-                                                        $('#choices .btn').removeClass('disabled');
-                                                        $('#quiz-question').removeClass(userAnswer.isCorrect ? 'panel-success' : 'panel-danger');
-                                                        $('#quiz-question').addClass('panel-info');
                                                     } else {
                                                         viewModel.quizUserData().userAnswers.pop();
-                                                        
-                                                        $('#choices .btn').removeClass('disabled');
-                                                        $('#quiz-question').removeClass(userAnswer.isCorrect ? 'panel-success' : 'panel-danger');
-                                                        $('#quiz-question').addClass('panel-info');
                                                         
                                                         viewModel.currentPageMessage().showMessage(true);
                                                         viewModel.currentPageMessage().displayText(messageMap['user_answers_save_error'][0]);
                                                         viewModel.currentPageMessage().displayStyle(messageMap['user_answers_save_error'][1]);
                                                     }                                 
+                                                }).fail(function(){
+                                                    viewModel.quizUserData().userAnswers.pop();
+                                                        
+                                                    viewModel.currentPageMessage().showMessage(true);
+                                                    viewModel.currentPageMessage().displayText(messageMap['user_answers_save_error'][0]);
+                                                    viewModel.currentPageMessage().displayStyle(messageMap['user_answers_save_error'][1]);
+                                                }).always(function(){
+                                                    $('#choices .btn').removeClass('disabled');
+                                                    $('#quiz-question').removeClass(userAnswer.isCorrect ? 'panel-success' : 'panel-danger');
+                                                    $('#quiz-question').addClass('panel-info');
                                                 });
     },
     choicesAfterRender: function() { 
@@ -343,6 +345,11 @@ viewModel.quizResult = ko.computed(function() {
                     notanswered: notanswered
                };
                   
+}, viewModel);
+
+viewModel.crudCommentLength = ko.computed(function() {
+    var comment = viewModel.crudComment();
+    return (comment === undefined) ? 0 : (comment.trim()).length;
 }, viewModel);
 
 
