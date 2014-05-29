@@ -432,7 +432,8 @@ function postPageLoad() {
             break;
         case 'quizmastercreatequiz' : getQuestionsAnswers();
             break;
-        case 'comments' : getComments();
+        case 'comments' : viewModel.usersComments([]);
+            getComments();
             break;
     }
 }

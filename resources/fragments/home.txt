@@ -1,34 +1,14 @@
+
 <div class="row marketing">
-    
-    <div class="col-sm-6">
-            <ul class="list-group">
-                <li class="list-group-item list-group-item-info">
-                    <h4 class="list-group-item-heading">Welcome <span data-bind="text:sessionUser().name"></span>&nbsp;!</h4>
-                </li>
-                <!-- ko if: sessionUser().online -->
-                    <li class="list-group-item">
-                        <img style="width:100%;" data-bind="attr: { src:sessionUser().picture }"/>
-                    </li>
-                <!-- /ko -->   
-                <!-- ko ifnot: sessionUser().online -->
-                    <li class="list-group-item">
-                        <img style="width:100%;" src="/resources/images/quiz.gif"/>
-                        <div style="padding-top: 10px;">
-                            <a class="btn btn-block btn-social btn-google-plus login" href="gplus">
-                                <i class="fa fa-google-plus"></i> Sign in with Google
-                            </a>
-                        </div>
-                        <div style="padding-top: 10px;">
-                            <a class="btn btn-block btn-social btn-facebook login" href="fb">
-                                <i class="fa fa-facebook"></i> Sign in with Facebook
-                            </a>
-                        </div>
-                    </li>
-                 <!-- /ko --> 
-            </ul>
-        
+    <div class="col-xs-12 col-sm-12">
+         <ul class="list-group">
+            <li class="list-group-item list-group-item-info">
+                <h4 class="list-group-item-heading">Welcome <span data-bind="text: sessionUser().name"></span>&nbsp;!!</h4>
+            </li>
+         </ul>
     </div>
-    <div class="col-sm-6">
+    
+    <div class="col-xs-6 col-sm-8">
         <ul class="list-group">
             <li class="list-group-item list-group-item-info">
                 <h4 class="list-group-item-heading">Features</h4>
@@ -38,6 +18,45 @@
             <li class="list-group-item"><span class="glyphicon glyphicon-flag"></span>&nbsp;Check Results</li>
             <li class="list-group-item"><span class="glyphicon glyphicon-heart"></span>&nbsp;Above all, Have Fun!!!</li>
         </ul>
-    </div>    
+    </div>
+
+    <div class="col-xs-6 col-sm-4">
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <!-- ko if: sessionUser().online -->
+                    <a href="profile" class="page-link">
+                        <img class="media-object" data-bind="attr: { src: sessionUser().picture, alt: sessionUser().name}" style="width:100%; max-width:256px; padding-bottom:10px;">
+                    </a>
+                    
+                    <!-- ko if: (sessionUser().provider === 'gplus') -->
+                    <a class="btn btn-block btn-social btn-google-plus logout" href="gplus">
+                        <i class="fa fa-google-plus"></i> Logout
+                    </a>
+                    <!-- /ko -->
+                    
+                    <!-- ko if: (sessionUser().provider === 'fb') -->
+                    <a class="btn btn-block btn-social btn-facebook logout" href="fb">
+                        <i class="fa fa-facebook"></i>Logout
+                    </a>
+                    <!-- /ko -->
+                <!-- /ko -->
+
+                <!-- ko ifnot: sessionUser().online -->
+                    <img src="/resources/images/quiz.png" style="width:100%; max-width:256px;">
+
+                    <a class="btn btn-block btn-social btn-google-plus login" href="gplus">
+                        <i class="fa fa-google-plus"></i> Google
+                    </a>
+                    <a class="btn btn-block btn-social btn-facebook login" href="fb">
+                        <i class="fa fa-facebook"></i>Facebook
+                    </a>
+                <!-- /ko -->
+            </div>
+        </div>
+        
+    </div>
+    
+    
 </div>
+
 
