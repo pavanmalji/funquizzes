@@ -91,23 +91,26 @@ class apperyio {
     function set_user($user, $provider, $sessiontoken) {
         $where = array ('username' => $user['id']);
         $existUser = json_decode(self::user_exists($where, $sessiontoken), true);
+        $url = 'https://api.appery.io/rest/1/db/users';
+        $verb = 'POST';
         
         if(count($existUser) > 0) {
-            return $existUser[0]['_id'];
+            $url = $url . "/" . $existUser[0]['_id'];
+            $verb = 'PUT';
+        } else {
+            $data = array(
+                'username' => $user['id'],
+                'password' => substr( md5(rand()), 0, 7),
+                'provider' => $provider,
+                'online' => false,
+                'acl' => array('*' => array('read' => true, 'write' => true))
+            );
         }
-      
-        $data = array(
-            'username' => $user['id'],
-            'password' => substr( md5(rand()), 0, 7),
-            'provider' => $provider,
-            'online' => false,
-            'acl' => array('*' => array('read' => true, 'write' => true))
-        );
         
-        $postdata = array_merge($user, $data);
-        $newUser = json_decode(self::do_post("https://api.appery.io/rest/1/db/users", $postdata), true);
-        
-        return $newUser['_id'];     
+        $postdata = (isset($data) ? array_merge($user, $data) : $user);
+            
+        $newUser = json_decode(self::do_post($url, $postdata, $sessiontoken, $verb), true);
+        return $newUser['_id'];
     }
     
     function get_active_quizzes($sessiontoken) {
