@@ -1,13 +1,17 @@
 <!-- ko if: sessionUser().online -->
 
 <div class="row marketing">
-    
-    <div class="col-sm-6">
-        <ul class="list-group">
+
+    <div class="col-xs-12 col-sm-12">
+         <ul class="list-group">
             <li class="list-group-item list-group-item-info">
-                <h4 class="list-group-item-heading">Profile Info</h4>
+                <h4 class="list-group-item-heading">Profile Information</h4>
             </li>
-            <li class="list-group-item"><strong>Username: </strong><span data-bind="text:sessionUser().username"></span></li>
+         </ul>
+    </div>
+    
+    <div class="col-xs-6 col-sm-8">
+        <ul class="list-group">
             <li class="list-group-item"><strong>Given Name: </strong><span data-bind="text:sessionUser().given_name"></span></li>
             <li class="list-group-item"><strong>Family Name: </strong><span data-bind="text:sessionUser().family_name"></span></li>
             <li class="list-group-item"><strong>Gender: </strong><span data-bind="text:sessionUser().gender"></span></li>
@@ -15,9 +19,9 @@
             <li class="list-group-item"><strong>Link: </strong><a data-bind="attr: {href: sessionUser().link}" target="_blank"><span data-bind="text:(sessionUser().provider === 'fb') ? 'Facebook' : 'Google'"></span> Profile Page</a></li>
         </ul>
     </div>
-    <div class="col-sm-6">
+    <div class="col-xs-6 col-sm-4">
         <ul class="list-group">
-            <li class="list-group-item"><img style="width:100%" data-bind="attr: { src:sessionUser().picture }"/></li>
+            <li class="list-group-item"><img class="img-circle" style="width:100%" data-bind="attr: { src:sessionUser().picture }"/></li>
         </ul>
     </div>
 </div>

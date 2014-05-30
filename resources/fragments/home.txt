@@ -1,23 +1,32 @@
-
 <div class="row marketing">
-    <div class="col-xs-12 col-sm-12">
-         <ul class="list-group">
-            <li class="list-group-item list-group-item-info">
-                <h4 class="list-group-item-heading">Welcome <span data-bind="text: sessionUser().name"></span>&nbsp;!!</h4>
-            </li>
-         </ul>
-    </div>
-    
     <div class="col-xs-6 col-sm-8">
-        <ul class="list-group">
-            <li class="list-group-item list-group-item-info">
-                <h4 class="list-group-item-heading">Features</h4>
-            </li>
-            <li class="list-group-item"><span class="glyphicon glyphicon-plus"></span>&nbsp;Create Quizzes</li>
-            <li class="list-group-item"><span class="glyphicon glyphicon-user"></span>&nbsp;Join & Play</li>
-            <li class="list-group-item"><span class="glyphicon glyphicon-flag"></span>&nbsp;Check Results</li>
-            <li class="list-group-item"><span class="glyphicon glyphicon-heart"></span>&nbsp;Above all, Have Fun!!!</li>
-        </ul>
+        <div class="list-group">
+            <p class="list-group-item list-group-item-success">
+              <span class="glyphicon glyphicon-user"></span>&nbsp;<strong>Player</strong>
+            </p>
+                <!-- ko if: sessionUser().online -->
+                    <a class="list-group-item page-link" href="playerselectquiz">Play Quiz</a>
+                    <a class="list-group-item page-link" href="playerresults">My Results</a>
+                    <a class="list-group-item page-link hidden-xs" href="profile">My Profile</a>
+                <!-- /ko -->
+                <!-- ko ifnot: sessionUser().online -->
+                    <p class="list-group-item">Play Quiz</p>
+                    <p class="list-group-item">My Results</p>
+                    <p class="list-group-item hidden-xs">My Profile</p>
+                <!-- /ko -->
+            
+            <p class="list-group-item list-group-item-warning">
+              <span class="glyphicon glyphicon-tower"></span>&nbsp;<strong>Quiz Master</strong>
+            </p>
+                <!-- ko if: sessionUser().online -->
+                    <a class="list-group-item page-link" href="quizmastersection">Dash Board</a>
+                    <a class="list-group-item page-link" href="quizmastercreatequiz">Create Quiz</a>
+                <!-- /ko -->
+                <!-- ko ifnot: sessionUser().online -->
+                    <p class="list-group-item">Dash Board</p>
+                    <p class="list-group-item">Create Quiz</p>
+                <!-- /ko -->
+        </div>
     </div>
 
     <div class="col-xs-6 col-sm-4">
@@ -25,7 +34,7 @@
             <div class="panel-body">
                 <!-- ko if: sessionUser().online -->
                     <a href="profile" class="page-link">
-                        <img class="media-object" data-bind="attr: { src: sessionUser().picture, alt: sessionUser().name}" style="width:100%; max-width:256px; padding-bottom:10px;">
+                        <img class="img-circle" data-bind="attr: { src: sessionUser().picture, alt: sessionUser().name}" style="width:100%; max-width:256px; padding-bottom:10px;">
                     </a>
                     
                     <!-- ko if: (sessionUser().provider === 'gplus') -->
@@ -53,10 +62,7 @@
                 <!-- /ko -->
             </div>
         </div>
-        
     </div>
-    
-    
 </div>
 
 

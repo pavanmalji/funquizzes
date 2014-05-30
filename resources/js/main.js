@@ -31,18 +31,20 @@ function getRandomBetween(min, max) {
 }
 
 var pages = {
-    home: 'resources/fragments/home.txt',
-    profile: 'resources/fragments/profile.txt',
-    help: 'resources/fragments/help.txt',
-    comments: 'resources/fragments/comments.txt',
-    playerselectquiz: 'resources/fragments/playerselectquiz.txt',
-    playerwatchquiz: 'resources/fragments/playerwatchquiz.txt',
-    playerresults: 'resources/fragments/playerresults.txt',
-    playerplayquiz: 'resources/fragments/playerplayquiz.txt',
-    quizmasteraddquestions: 'resources/fragments/quizmasteraddquestions.txt',
-    quizmastercreatequiz: 'resources/fragments/quizmastercreatequiz.txt',
-    quizmasterprocterquiz: 'resources/fragments/quizmasterprocterquiz.txt',
-    quizmasterresults: 'resources/fragments/quizmasterresults.txt'
+    home: ['', 'resources/fragments/home.txt'],
+    profile: ['Profile Information', 'resources/fragments/profile.txt'],
+    help: ['Help', 'resources/fragments/help.txt'],
+    comments: ['Comments', 'resources/fragments/comments.txt'],
+    playersection: ['Player Section', 'resources/fragments/playersection.txt'],
+    playerselectquiz: ['Player Select Quiz', 'resources/fragments/playerselectquiz.txt'],
+    playerwatchquiz: ['Player Watch Quiz', 'resources/fragments/playerwatchquiz.txt'],
+    playerresults: ['Player Results', 'resources/fragments/playerresults.txt'],
+    playerplayquiz: ['Player Play Quiz', 'resources/fragments/playerplayquiz.txt'],
+    quizmastersection: ['Quiz Master Section', 'resources/fragments/quizmastersection.txt'],
+    quizmasteraddquestions: ['Quiz Master Add Questions', 'resources/fragments/quizmasteraddquestions.txt'],
+    quizmastercreatequiz: ['Quiz Master Create Quiz', 'resources/fragments/quizmastercreatequiz.txt'],
+    quizmasterenablequiz: ['Quiz Master Enable Quiz', 'resources/fragments/quizmasterenablequiz.txt'],
+    quizmasterdashboard: ['Quiz Master Dashboard', 'resources/fragments/quizmasterdashboard.txt']
 };
 
 var authURLS = {
@@ -114,6 +116,7 @@ var viewModel = {
     _dummyObservable: ko.observable(),
     sessionUser: ko.observable([]),
     currentPageURL: ko.observable('home'),
+    currentPageTitle: ko.observable('Fun Quizzes'),
     currentPageMessage: ko.observable(message),
     
     quizQuestionsAnswers: ko.observableArray([]),
@@ -300,14 +303,15 @@ var viewModel = {
 };
 
 viewModel.currentPageURL().loadPage = ko.dependentObservable(function() {
-    $.get(pages[viewModel.currentPageURL()], function (data) {
+    
+    $.get(pages[viewModel.currentPageURL()][1], function (data) {
         $('#page-content').hide().html(data).fadeIn(300);
         var pagecontent = $('#page-content')[0]; 
         ko.cleanNode(pagecontent);
         ko.applyBindings(viewModel, pagecontent);
 
         postPageLoad();
-
+        
         if(viewModel.sessionUser().length === 0 || viewModel.sessionUser()._id === '000000000000000000000000') {
             $.get( "utils/authinfo.php?user", function( data ) {
                 if(data !== undefined) {
@@ -427,8 +431,12 @@ function postPageLoad() {
         }
     }
     
+    viewModel.currentPageTitle(pages[viewModel.currentPageURL()][0]);
+    
     switch(viewModel.currentPageURL()) {
         case 'playerselectquiz' : getActiveQuizzes();
+            break;
+        case 'playerplayquiz' : viewModel.currentPageTitle(viewModel.currentPageTitle() + ' - ' + viewModel.selectedQuiz().name);
             break;
         case 'quizmastercreatequiz' : getQuestionsAnswers();
             break;
@@ -470,7 +478,6 @@ function isAnonymousSession() {
     }
 }
 
-
 function initSessionCookie() {
     var sessionInfo = getSessionCookie();
     
@@ -486,6 +493,8 @@ function facebookLoginRedirectURIBugFix() {
         event.preventDefault(); // no page reload
     }
 }
+
+
 
 function initApp() {
     initSessionCookie();

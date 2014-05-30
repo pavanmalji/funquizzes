@@ -1,0 +1,16 @@
+<!-- ko if: sessionUser().online -->
+
+    <div class="row marketing">
+        <div class="col-xs-3 col-sm-4">
+            <div class="list-group">
+                <a class="list-group-item page-link" href="quizmasterstartquiz">Start Quiz</a>
+                <a class="list-group-item page-link" href="quizmastercreatequiz">Create Quiz</a>
+                <a class="list-group-item page-link" href="quizmastercreatequiz">Add Question</a>
+            </div>
+        </div>
+        
+        <div class="col-xs-9 col-sm-8">
+            Test Test.
+        </div>
+    </div>
+<!-- /ko -->
