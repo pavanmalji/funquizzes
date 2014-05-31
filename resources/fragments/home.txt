@@ -39,13 +39,13 @@
                     
                     <!-- ko if: (sessionUser().provider === 'gplus') -->
                     <a class="btn btn-block btn-social btn-google-plus logout" href="gplus">
-                        <i class="fa fa-google-plus"></i> Logout
+                        <i class="fa fa-google-plus"></i>Sign Out
                     </a>
                     <!-- /ko -->
                     
                     <!-- ko if: (sessionUser().provider === 'fb') -->
                     <a class="btn btn-block btn-social btn-facebook logout" href="fb">
-                        <i class="fa fa-facebook"></i>Logout
+                        <i class="fa fa-facebook"></i>Sign Out
                     </a>
                     <!-- /ko -->
                 <!-- /ko -->
@@ -54,10 +54,10 @@
                     <img src="/resources/images/quiz.png" style="width:100%; max-width:256px;">
 
                     <a class="btn btn-block btn-social btn-google-plus login" href="gplus">
-                        <i class="fa fa-google-plus"></i> Google
+                        <i class="fa fa-google-plus"></i>Sign In
                     </a>
                     <a class="btn btn-block btn-social btn-facebook login" href="fb">
-                        <i class="fa fa-facebook"></i>Facebook
+                        <i class="fa fa-facebook"></i>Sign In
                     </a>
                 <!-- /ko -->
             </div>

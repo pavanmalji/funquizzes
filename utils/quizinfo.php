@@ -29,6 +29,8 @@ if(isset($_SESSION['user'])) {
         $response = $apperyclient->get_comments($limit, $skip, $_SESSION['apperysession']);
     } else if(isset($_POST['addcomment'])) {
         $response = $apperyclient->add_comment($_SESSION['user'], $_POST['comment'], $_SESSION['apperysession']);
+    } else if(isset($_GET['createdquizzes'])) {
+        $response = $apperyclient->get_created_quizzes($_SESSION['user']['_id'], $_SESSION['apperysession']);
     }
 }
 print($response);

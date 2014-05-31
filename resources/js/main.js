@@ -36,15 +36,14 @@ var pages = {
     help: ['Help', 'resources/fragments/help.txt'],
     comments: ['Comments', 'resources/fragments/comments.txt'],
     playersection: ['Player Section', 'resources/fragments/playersection.txt'],
-    playerselectquiz: ['Player Select Quiz', 'resources/fragments/playerselectquiz.txt'],
+    playerselectquiz: ['Player - Select Quiz', 'resources/fragments/playerselectquiz.txt'],
     playerwatchquiz: ['Player Watch Quiz', 'resources/fragments/playerwatchquiz.txt'],
-    playerresults: ['Player Results', 'resources/fragments/playerresults.txt'],
-    playerplayquiz: ['Player Play Quiz', 'resources/fragments/playerplayquiz.txt'],
-    quizmastersection: ['Quiz Master Section', 'resources/fragments/quizmastersection.txt'],
-    quizmasteraddquestions: ['Quiz Master Add Questions', 'resources/fragments/quizmasteraddquestions.txt'],
-    quizmastercreatequiz: ['Quiz Master Create Quiz', 'resources/fragments/quizmastercreatequiz.txt'],
-    quizmasterenablequiz: ['Quiz Master Enable Quiz', 'resources/fragments/quizmasterenablequiz.txt'],
-    quizmasterdashboard: ['Quiz Master Dashboard', 'resources/fragments/quizmasterdashboard.txt']
+    playerresults: ['Player - Results', 'resources/fragments/playerresults.txt'],
+    playerplayquiz: ['Player - Play Quiz', 'resources/fragments/playerplayquiz.txt'],
+    quizmastersection: ['Quiz Master - Section', 'resources/fragments/quizmastersection.txt'],
+    quizmasteraddquestions: ['Quiz Master - Add Questions', 'resources/fragments/quizmasteraddquestions.txt'],
+    quizmastercreatequiz: ['Quiz Master - Create Quiz', 'resources/fragments/quizmastercreatequiz.txt'],
+    quizmasterstartquiz: ['Quiz Master - Start Quiz', 'resources/fragments/quizmasterstartquiz.txt']
 };
 
 var authURLS = {
@@ -186,12 +185,14 @@ var viewModel = {
                                                     }
                                                 });
     },
-    activeQuizzes: ko.observable([]),
+    quizzes: ko.observable([]),
     selectedQuiz: ko.observable([]),
     quizData: ko.observable([]),
     currentQuestionAnswer: ko.observable([]),
     quizUserData: ko.observable([]),
-    
+    updateQuiz: function(data, event) {
+        console.log(data);
+    },
     joinQuiz: function(data, event) {
         
         viewModel.selectedQuiz(data);
@@ -224,8 +225,8 @@ var viewModel = {
                          };
                          
         $('#choices .btn').addClass('disabled');
-        $('#quiz-question').removeClass('panel-info');
-        $('#quiz-question').addClass(userAnswer.isCorrect ? 'panel-success' : 'panel-danger');
+        $('#main-panel').removeClass('panel-default');
+        $('#main-panel').addClass(userAnswer.isCorrect ? 'panel-success' : 'panel-danger');
                     
         viewModel.quizUserData().userAnswers.push(userAnswer);
         
@@ -258,13 +259,13 @@ var viewModel = {
                                                     viewModel.currentPageMessage().displayStyle(messageMap['user_answers_save_error'][1]);
                                                 }).always(function(){
                                                     $('#choices .btn').removeClass('disabled');
-                                                    $('#quiz-question').removeClass(userAnswer.isCorrect ? 'panel-success' : 'panel-danger');
-                                                    $('#quiz-question').addClass('panel-info');
+                                                    $('#main-panel').removeClass(userAnswer.isCorrect ? 'panel-success' : 'panel-danger');
+                                                    $('#main-panel').addClass('panel-default');
                                                 });
     },
     choicesAfterRender: function() { 
         $('#choices').hide(); $('#choices').slideDown(200); 
-    },
+    },       
     crudComment: ko.observable(),
     usersComments: ko.observableArray([]),
     hasMoreComments: ko.observable(true),
@@ -388,9 +389,23 @@ $(document).on( "click", ".logout", function(e) {
 });
 
 function getActiveQuizzes() {
+    viewModel.quizzes([]);
+    
     $.get( "utils/quizinfo.php?activequizzes", function( data ) {
             if(data !== undefined && data.length > 0) {
-                viewModel.activeQuizzes(data);
+                viewModel.quizzes(data);
+            } else {
+                // ToDo: Error Loading Active Quizzes
+            }
+    });
+}
+
+function getCreatedQuizzes() {
+    viewModel.quizzes([]);
+    
+    $.get( "utils/quizinfo.php?createdquizzes", function( data ) {
+            if(data !== undefined && data.length > 0) {
+                viewModel.quizzes(data);
             } else {
                 // ToDo: Error Loading Active Quizzes
             }
@@ -439,6 +454,8 @@ function postPageLoad() {
         case 'playerplayquiz' : viewModel.currentPageTitle(viewModel.currentPageTitle() + ' - ' + viewModel.selectedQuiz().name);
             break;
         case 'quizmastercreatequiz' : getQuestionsAnswers();
+            break;
+        case 'quizmasterstartquiz' : getCreatedQuizzes();
             break;
         case 'comments' : viewModel.usersComments([]);
             getComments();

@@ -1,0 +1,46 @@
+<!-- ko if: sessionUser().online -->
+
+    <div class="row marketing">
+        <div class="col-xs-12 col-sm-12">
+            <table class="table table-bordered">
+                <colgroup>
+                    <col class="col-xs-4 col-sm-8">
+                    <col class="col-xs-8 col-sm-4">
+                </colgroup>
+                <thead>
+                    <tr class="info">
+                        <th>Quiz</th>
+                        <th>Activate & Set Pin</th>
+                    </tr>
+                </thead>
+                <tbody data-bind="template:    {   name: 'quiz-list-template', 
+                                                    foreach: quizzes(),
+                                                    as: 'quiz'    
+                                                }">        
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+
+    <script type="text/html" id="quiz-list-template">
+        <tr>
+            <td>
+                <b class="list-group-item-heading" data-bind="text: name"></b>
+                <p class="list-group-item-text hidden-xs" data-bind="text: description"></p>
+            </td>
+            <td>
+                <div class="input-group">
+                    <span class="input-group-addon">
+                        <input type="checkbox" data-bind="attr: { name: _id }, value: active, checked: active">
+                    </span>
+                    <input type="text" class="form-control" data-bind="value: pin">
+                    <span class="input-group-btn">
+                      <button class="btn btn-default" type="button" data-bind="click: viewModel.updateQuiz">Set</button>
+                    </span>
+                </div>
+            </td>
+        </tr>
+    </script>
+
+<!-- /ko -->

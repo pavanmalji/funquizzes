@@ -118,6 +118,11 @@ class apperyio {
         return self::do_get('https://api.appery.io/rest/1/db/collections/Quizzes/?where=' . urlencode(json_encode($where, JSON_UNESCAPED_SLASHES)), $sessiontoken);
     }
     
+    function get_created_quizzes($userId, $sessiontoken) {
+        $where = array ('userId' => $userId);
+        return self::do_get('https://api.appery.io/rest/1/db/collections/Quizzes/?where=' . urlencode(json_encode($where, JSON_UNESCAPED_SLASHES)), $sessiontoken);
+    }
+    
     function join_quiz($userId, $quiz, $sessiontoken) {
         $data = array(
             'userId' => $userId,
@@ -155,7 +160,7 @@ class apperyio {
     }
     
     function create_quiz($userId, $quiz, $sessiontoken) {
-        $postdata = array_merge(array('quizmaster' => $userId), $quiz);
+        $postdata = array_merge(array('userId' => $userId, 'active' => false, 'pin' => rand()), $quiz);
         return self::do_post('https://api.appery.io/rest/1/db/collections/Quizzes/', $postdata, $sessiontoken, 'POST');
     }
     
@@ -164,7 +169,6 @@ class apperyio {
     }
     
     function add_comment($user, $comment, $sessiontoken) {
-      
         $postdata = array(  'userId' => $user['_id'], 
                             'comment' => $comment, 
                             'userInfo' => array('name' => $user['name'], 

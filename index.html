@@ -75,7 +75,21 @@
                 </ul>
             <!-- /ko -->
             
-            <div class="panel panel-default" style="margin-top: 10px;">
+            <!-- ko if: currentPageURL().indexOf('quizmaster') === 0 -->
+                <ul class="nav nav-pills">
+                    <li data-bind="attr: { class : (currentPageURL() === 'quizmasterstartquiz') ? 'active' : '' }">
+                        <a class="page-link" href="quizmasterstartquiz">Start Quiz</a>
+                    </li>
+                    <li data-bind="attr: { class : (currentPageURL() === 'quizmastercreatequiz') ? 'active' : '' }">
+                        <a class="page-link" href="quizmastercreatequiz">Create Quiz</a>
+                    </li>
+                    <li data-bind="attr: { class : (currentPageURL() === 'quizmasteraddquestions') ? 'active' : '' }">
+                        <a class="page-link" href="quizmasteraddquestions">Add Questions</a>
+                    </li>
+                </ul>
+            <!-- /ko -->
+                        
+            <div id="main-panel" class="panel panel-default" style="margin-top: 10px;">
                 <!-- ko if: currentPageTitle() !== '' -->
                     <div class="panel-heading">
                         <h3 class="panel-title" data-bind="text:currentPageTitle()"></h3>
