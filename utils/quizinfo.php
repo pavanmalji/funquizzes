@@ -31,6 +31,8 @@ if(isset($_SESSION['user'])) {
         $response = $apperyclient->add_comment($_SESSION['user'], $_POST['comment'], $_SESSION['apperysession']);
     } else if(isset($_GET['createdquizzes'])) {
         $response = $apperyclient->get_created_quizzes($_SESSION['user']['_id'], $_SESSION['apperysession']);
+    } else if(isset($_POST['updatequiz'])) {
+        $response = $apperyclient->update_quiz($_POST['quiz'], $_SESSION['apperysession']);
     }
 }
 print($response);

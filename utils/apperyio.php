@@ -160,7 +160,7 @@ class apperyio {
     }
     
     function create_quiz($userId, $quiz, $sessiontoken) {
-        $postdata = array_merge(array('userId' => $userId, 'active' => false, 'pin' => rand()), $quiz);
+        $postdata = array_merge(array('userId' => $userId, 'active' => false, 'pin' => substr( md5(rand()), 0, 4)), $quiz);
         return self::do_post('https://api.appery.io/rest/1/db/collections/Quizzes/', $postdata, $sessiontoken, 'POST');
     }
     
@@ -178,6 +178,15 @@ class apperyio {
                         );
         
         return self::do_post('https://api.appery.io/rest/1/db/collections/Comments/', $postdata, $sessiontoken, 'POST');
+    }
+    
+    function update_quiz($quiz, $sessiontoken) {
+        $postdata = array(
+                        'pin' => $quiz['pin'],
+                        'active' => $quiz['active']
+                    );
+                        
+        return self::do_post('https://api.appery.io/rest/1/db/collections/Quizzes/' . $quiz['_id'], $postdata, $sessiontoken, 'PUT');
     }
 }
     

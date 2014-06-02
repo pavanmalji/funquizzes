@@ -77,14 +77,14 @@
             
             <!-- ko if: currentPageURL().indexOf('quizmaster') === 0 -->
                 <ul class="nav nav-pills">
-                    <li data-bind="attr: { class : (currentPageURL() === 'quizmasterstartquiz') ? 'active' : '' }">
-                        <a class="page-link" href="quizmasterstartquiz">Start Quiz</a>
+                    <li data-bind="attr: { class : (currentPageURL() === 'quizmastersection') ? 'active' : '' }">
+                        <a class="page-link" href="quizmastersection"><span class="glyphicon glyphicon-th-large"></span> Dashboard</a>
                     </li>
                     <li data-bind="attr: { class : (currentPageURL() === 'quizmastercreatequiz') ? 'active' : '' }">
-                        <a class="page-link" href="quizmastercreatequiz">Create Quiz</a>
+                        <a class="page-link" href="quizmastercreatequiz"><span class="glyphicon glyphicon-plus"></span> Quiz</a>
                     </li>
                     <li data-bind="attr: { class : (currentPageURL() === 'quizmasteraddquestions') ? 'active' : '' }">
-                        <a class="page-link" href="quizmasteraddquestions">Add Questions</a>
+                        <a class="page-link" href="quizmasteraddquestions"><span class="glyphicon glyphicon-plus"></span> Questions</a>                   
                     </li>
                 </ul>
             <!-- /ko -->

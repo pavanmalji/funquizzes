@@ -42,8 +42,7 @@ var pages = {
     playerplayquiz: ['Player - Play Quiz', 'resources/fragments/playerplayquiz.txt'],
     quizmastersection: ['Quiz Master - Section', 'resources/fragments/quizmastersection.txt'],
     quizmasteraddquestions: ['Quiz Master - Add Questions', 'resources/fragments/quizmasteraddquestions.txt'],
-    quizmastercreatequiz: ['Quiz Master - Create Quiz', 'resources/fragments/quizmastercreatequiz.txt'],
-    quizmasterstartquiz: ['Quiz Master - Start Quiz', 'resources/fragments/quizmasterstartquiz.txt']
+    quizmastercreatequiz: ['Quiz Master - Create Quiz', 'resources/fragments/quizmastercreatequiz.txt']
 };
 
 var authURLS = {
@@ -70,6 +69,9 @@ var messageMap = {
     quiz_create_wait: ['Creating Quiz. Please Wait.', 'alert alert-info'],
     quiz_create_success: ['Quiz created successfully', 'alert alert-success'],
     quiz_create_error: ['Error creating quiz.', 'alert alert-danger'],
+    quiz_update_wait: ['Updating Quiz. Please Wait.', 'alert alert-info'],
+    quiz_update_success: ['Quiz updated successfully', 'alert alert-success'],
+    quiz_update_error: ['Error updating quiz.', 'alert alert-danger'],
     user_comment_add_error: ['Error adding comment. Please try again.', 'alert alert-danger'],
 };
 
@@ -191,14 +193,32 @@ var viewModel = {
     currentQuestionAnswer: ko.observable([]),
     quizUserData: ko.observable([]),
     updateQuiz: function(data, event) {
-        console.log(data);
+        viewModel.currentPageMessage().showMessage(true);
+        viewModel.currentPageMessage().displayText(messageMap['quiz_update_wait'][0]);
+        viewModel.currentPageMessage().displayStyle(messageMap['quiz_update_wait'][1]);
+
+        var postData = {
+            updatequiz: true,
+            quiz : data
+        };
+        
+        $.post("utils/quizinfo.php", postData,  function(data, status){
+                                                    if(data !== undefined) {
+                                                        viewModel.currentPageMessage().displayText(messageMap['quiz_update_success'][0]);
+                                                        viewModel.currentPageMessage().displayStyle(messageMap['quiz_update_success'][1]);
+                                                    } else {
+                                                        // ToDo: Error updating quiz
+                                                        viewModel.currentPageMessage().displayText(messageMap['quiz_update_error'][0]);
+                                                        viewModel.currentPageMessage().displayStyle(messageMap['quiz_update_error'][1]);
+                                                    }                                      
+                                                });
     },
     joinQuiz: function(data, event) {
         
         viewModel.selectedQuiz(data);
       
         var postData = {
-            joinquiz:true,
+            joinquiz:true,  
             quiz: viewModel.selectedQuiz()
         };
         
@@ -453,9 +473,9 @@ function postPageLoad() {
             break;
         case 'playerplayquiz' : viewModel.currentPageTitle(viewModel.currentPageTitle() + ' - ' + viewModel.selectedQuiz().name);
             break;
-        case 'quizmastercreatequiz' : getQuestionsAnswers();
+        case 'quizmastersection' : getCreatedQuizzes();
             break;
-        case 'quizmasterstartquiz' : getCreatedQuizzes();
+        case 'quizmastercreatequiz' : getQuestionsAnswers();
             break;
         case 'comments' : viewModel.usersComments([]);
             getComments();
