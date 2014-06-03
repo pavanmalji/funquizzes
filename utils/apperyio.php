@@ -113,20 +113,37 @@ class apperyio {
         return $newUser['_id'];
     }
     
-    function get_active_quizzes($sessiontoken) {
+    function get_all_quizzes($limit, $skip, $sessiontoken) {
+        return self::do_get('https://api.appery.io/rest/1/db/collections/Quizzes/?limit=' . urlencode($limit) . '&skip=' . urlencode($skip) . '&sort=' . urlencode('-_createdAt'), $sessiontoken);
+    }
+    
+    function get_quiz_users($quizid, $sessiontoken) {
+        $where = array ('quizId' => $quizid);
+        return self::do_get('https://api.appery.io/rest/1/db/collections/QuizzesUsers/?sort=' . urlencode('-correct') . '&where=' . urlencode(json_encode($where, JSON_UNESCAPED_SLASHES)), $sessiontoken);
+    }
+    
+    
+    function get_active_quizzes($limit, $skip, $sessiontoken) {
         $where = array ('active' => true);
-        return self::do_get('https://api.appery.io/rest/1/db/collections/Quizzes/?where=' . urlencode(json_encode($where, JSON_UNESCAPED_SLASHES)), $sessiontoken);
+        return self::do_get('https://api.appery.io/rest/1/db/collections/Quizzes/?limit=' . urlencode($limit) . '&skip=' . urlencode($skip) . '&sort=' . urlencode('-_createdAt') . '&where=' . urlencode(json_encode($where, JSON_UNESCAPED_SLASHES)), $sessiontoken);
     }
     
-    function get_created_quizzes($userId, $sessiontoken) {
+    function get_created_quizzes($limit, $skip, $userId, $sessiontoken) {
         $where = array ('userId' => $userId);
-        return self::do_get('https://api.appery.io/rest/1/db/collections/Quizzes/?where=' . urlencode(json_encode($where, JSON_UNESCAPED_SLASHES)), $sessiontoken);
+        return self::do_get('https://api.appery.io/rest/1/db/collections/Quizzes/?limit=' . urlencode($limit) . '&skip=' . urlencode($skip) . '&sort=' . urlencode('-_createdAt') . '&where=' . urlencode(json_encode($where, JSON_UNESCAPED_SLASHES)), $sessiontoken);
     }
     
-    function join_quiz($userId, $quiz, $sessiontoken) {
+    function join_quiz($user, $quiz, $sessiontoken) {
         $data = array(
-            'userId' => $userId,
-            'quizId' => $quiz['_id']
+            'userId' => $user['_id'],
+            'quizId' => $quiz['_id'],
+            'total' => count($quiz['questionids']),
+            'correct' => 0,
+            'wrong' => 0,
+            'userInfo' => array('name' => $user['name'], 
+                                                'picture' => $user['picture'], 
+                                                'link' => $user['link']
+                            )
         );
         
         $quizdata = array(json_decode(self::do_post('https://api.appery.io/rest/1/db/collections/QuizzesUsers/', $data, $sessiontoken)));
@@ -145,7 +162,11 @@ class apperyio {
     }
     
     function save_user_answer($quizuserdata, $sessiontoken) {
-        $postdata = array('userAnswers' => $quizuserdata['userAnswers']);
+        $postdata = array(
+                        'userAnswers' => $quizuserdata['userAnswers'],
+                        'correct' => $quizuserdata['correct'],
+                        'wrong' => $quizuserdata['wrong']
+                    );
         return self::do_post('https://api.appery.io/rest/1/db/collections/QuizzesUsers/' . $quizuserdata['_id'], $postdata, $sessiontoken, 'PUT');
     }
     
@@ -154,9 +175,9 @@ class apperyio {
         return self::do_post('https://api.appery.io/rest/1/db/collections/QuestionsAnswers/', $postdata, $sessiontoken, 'POST');
     }
     
-    function get_questions_answers($userId, $sessiontoken) {
+    function get_questions_answers($limit, $skip, $userId, $sessiontoken) {
         $where = array ('userId' => $userId);
-        return self::do_get('https://api.appery.io/rest/1/db/collections/QuestionsAnswers/?where=' . urlencode(json_encode($where, JSON_UNESCAPED_SLASHES)), $sessiontoken);
+        return self::do_get('https://api.appery.io/rest/1/db/collections/QuestionsAnswers/?limit=' . urlencode($limit) . '&skip=' . urlencode($skip) . '&sort=' . urlencode('-_createdAt'). '&where=' . urlencode(json_encode($where, JSON_UNESCAPED_SLASHES)), $sessiontoken);
     }
     
     function create_quiz($userId, $quiz, $sessiontoken) {
@@ -182,7 +203,7 @@ class apperyio {
     
     function update_quiz($quiz, $sessiontoken) {
         $postdata = array(
-                        'pin' => $quiz['pin'],
+                        'pin' => md5($quiz['pin']),
                         'active' => $quiz['active']
                     );
                         

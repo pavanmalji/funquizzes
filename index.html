@@ -55,6 +55,7 @@
                             <!-- ko if: sessionUser().online -->
                                 <li data-bind="attr: { class: currentPageURL().indexOf('player') === 0  ? 'active' : '' }"><a class="navbar-link" href="playersection">Player</a></li>
                                 <li data-bind="attr: { class: currentPageURL().indexOf('quizmaster') === 0  ? 'active' : '' }"><a class="navbar-link" href="quizmastersection">Quiz Master</a></li>
+                                <li data-bind="attr: { class: currentPageURL().indexOf('dashboard') === 0  ? 'active' : '' }"><a class="navbar-link" href="dashboardallquizzes">Dashboard</a></li>
                                 <li data-bind="attr: { class: currentPageURL() === 'comments'  ? 'active' : '' }"><a class="navbar-link" href="comments">Comments</a></li>     
                             <!-- /ko -->
                             
@@ -66,11 +67,11 @@
             
             <!-- ko if: currentPageURL().indexOf('player') === 0 -->
                 <ul class="nav nav-pills">
-                        <li data-bind="attr: { class : (currentPageURL() === 'playerselectquiz' || currentPageURL() === 'playerplayquiz') ? 'active' : '' }">
-                            <a class="page-link" href="playerselectquiz">Play Quiz</a>
+                        <li data-bind="attr: { class : (currentPageURL() === 'playersection' || currentPageURL() === 'playerplayquiz') ? 'active' : '' }">
+                            <a class="page-link" href="playersection"><span class="glyphicon glyphicon-tower"></span> Play Quiz</a>
                         </li>
                         <li data-bind="attr: { class : (currentPageURL() === 'playerresults') ? 'active' : '' }">
-                            <a class="page-link" href="playerresults">My Results</a>
+                            <a class="page-link" href="playerresults"><span class="glyphicon glyphicon-stats"></span> My Results</a>
                         </li>
                 </ul>
             <!-- /ko -->
@@ -78,17 +79,25 @@
             <!-- ko if: currentPageURL().indexOf('quizmaster') === 0 -->
                 <ul class="nav nav-pills">
                     <li data-bind="attr: { class : (currentPageURL() === 'quizmastersection') ? 'active' : '' }">
-                        <a class="page-link" href="quizmastersection"><span class="glyphicon glyphicon-th-large"></span> Dashboard</a>
+                        <a class="page-link" href="quizmastersection"><span class="glyphicon glyphicon-cog"></span> Dashboard</a>
                     </li>
                     <li data-bind="attr: { class : (currentPageURL() === 'quizmastercreatequiz') ? 'active' : '' }">
                         <a class="page-link" href="quizmastercreatequiz"><span class="glyphicon glyphicon-plus"></span> Quiz</a>
                     </li>
                     <li data-bind="attr: { class : (currentPageURL() === 'quizmasteraddquestions') ? 'active' : '' }">
-                        <a class="page-link" href="quizmasteraddquestions"><span class="glyphicon glyphicon-plus"></span> Questions</a>                   
+                        <a class="page-link" href="quizmasteraddquestions"><span class="glyphicon glyphicon-question-sign"></span> Questions</a>                   
                     </li>
                 </ul>
             <!-- /ko -->
-                        
+            
+            <!-- ko if: currentPageURL().indexOf('dashboard') === 0 -->
+                <ul class="nav nav-pills">
+                    <li data-bind="attr: { class : (currentPageURL() === 'dashboardallquizzes') ? 'active' : '' }">
+                        <a class="page-link" href="dashboardallquizzes"><span class="glyphicon glyphicon-list"></span> All Quizzes</a>
+                    </li>
+                </ul>
+            <!-- /ko -->
+                                    
             <div id="main-panel" class="panel panel-default" style="margin-top: 10px;">
                 <!-- ko if: currentPageTitle() !== '' -->
                     <div class="panel-heading">
@@ -130,6 +139,7 @@
 
         <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
         <script src="resources/js/jquery.cookie.js"></script>
+        <script src="resources/js/jquery.md5.min.js"></script>
         <script src="resources/js/moment.min.js"></script>
         <script src="resources/bootstrap/js/bootstrap.min.js"></script>
         <script src="resources/js/knockout-3.1.0.js"></script>

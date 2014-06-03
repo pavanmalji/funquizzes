@@ -23,6 +23,7 @@
                             <p class="list-group-item-heading"><span data-bind="text: question"></span>&nbsp;?</p>
                     </li>
                 </ul>
+                <a class="btn btn-primary btn-block" role="button" data-bind="visible:hasMoreQuestionsAnswers, click: getQuestionsAnswers">Load More Questions</a>
             </div>
 
             <a class="btn btn-success btn-block" role="button" data-bind="click: createQuiz">Create Quiz</a>

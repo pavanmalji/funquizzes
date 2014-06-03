@@ -14,12 +14,12 @@
                     </tr>
                 </thead>
                 <tbody data-bind="template:    {   name: 'quiz-list-template', 
-                                                    foreach: quizzes(),
+                                                    foreach: createdQuizzes(),
                                                     as: 'quiz'    
                                                 }">        
                 </tbody>
             </table>
-
+            <a class="btn btn-primary btn-block" role="button" data-bind="visible:hasMoreCreatedQuizzes, click: getCreatedQuizzes">Load More Quizzes</a>
         </div>
     </div>
 
@@ -34,7 +34,7 @@
                     <span class="input-group-addon">
                         <input type="checkbox" data-bind="attr: { name: _id }, value: active, checked: active">
                     </span>
-                    <input type="text" class="form-control" data-bind="value: pin">
+                    <input type="text" class="form-control" data-bind="attr { id: _id}">
                     <span class="input-group-btn">
                       <button class="btn btn-default" type="button" data-bind="click: viewModel.updateQuiz">Set</button>
                     </span>

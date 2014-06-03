@@ -5,7 +5,7 @@
               <span class="glyphicon glyphicon-user"></span>&nbsp;<strong>Player</strong>
             </p>
                 <!-- ko if: sessionUser().online -->
-                    <a class="list-group-item page-link" href="playerselectquiz">Play Quiz</a>
+                    <a class="list-group-item page-link" href="playersection">Play Quiz</a>
                     <a class="list-group-item page-link" href="playerresults">My Results</a>
                     <a class="list-group-item page-link hidden-xs" href="profile">My Profile</a>
                 <!-- /ko -->
@@ -16,7 +16,7 @@
                 <!-- /ko -->
             
             <p class="list-group-item list-group-item-warning">
-              <span class="glyphicon glyphicon-tower"></span>&nbsp;<strong>Quiz Master</strong>
+              <span class="glyphicon glyphicon-user"></span>&nbsp;<strong>Quiz Master</strong>
             </p>
                 <!-- ko if: sessionUser().online -->
                     <a class="list-group-item page-link" href="quizmastersection">Dash Board</a>
