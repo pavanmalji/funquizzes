@@ -202,6 +202,7 @@ var viewModel = {
     currentQuestionAnswer: ko.observable([]),
     quizUserData: ko.observable([]),
     quizUsers: ko.observable([]),
+    
     showQuizResults: function(data, event) {
         viewModel.selectedQuiz(data);
         viewModel.currentPageURL('dashboardquizresults');
@@ -444,20 +445,26 @@ $(document).on( "click", ".logout", function(e) {
     window.location = authURLS[providerKey].logout;
 });
 
-function getQuizUsers() {
-    if(viewModel.currentPageURL() === 'dashboardquizresults') {
-        $.get( "utils/quizinfo.php?quizusers&quizid=" + viewModel.selectedQuiz()._id, function( data ) {
-            if(data !== undefined && data.length > 0) {
-                viewModel.quizUsers(data);
-                console.log(viewModel.currentPageURL());
-                if(viewModel.currentPageURL() === 'dashboardquizresults') {
-                   setTimeout(getQuizUsers(), 500);
-                }
-            } else {
-            }  
-            // ToDo: Error Loading Active Quizzes
-        });
+function getQuizUsersByHighScore() {
+    getQuizUsers('&sort=-correct');
+}
+
+function getQuizUsersByLowScore() {
+    getQuizUsers('&sort=-wrong');
+}
+
+function getQuizUsers(sort) {
+    if(sort === undefined) {
+        sort = '&sort=-_updatedAt';
     }
+    
+    $.get( "utils/quizinfo.php?quizusers&quizid=" + viewModel.selectedQuiz()._id + sort, function( data ) {
+        if(data !== undefined && data.length > 0) {
+            viewModel.quizUsers(data);
+        } else {
+        }  
+        // ToDo: Error Loading Active Quizzes
+    });
 }
 
 function getAllQuizzes() {

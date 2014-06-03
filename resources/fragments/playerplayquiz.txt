@@ -49,14 +49,13 @@
                     <!-- ko ifnot: currentQuestionAnswer() --> 
                         <div class="panel panel-info">
                             <div class="panel-heading">
-                                <h3 class="panel-title">Quiz Completed</h3>
+                                <h3 class="panel-title">Quiz Completed - Your Score</h3>
                             </div>
                             <div class="panel-body">
-                                <p><strong>Your Score is as follows</strong></p>
-                                <p><strong>Total: </strong><span data-bind="text: quizResult().total"></span></p>
-                                <p><strong>Correct: </strong><span data-bind="text: quizResult().correct"></span></p>
-                                <p><strong>Wrong: </strong><span data-bind="text: quizResult().wrong"></span></p>
-                                <p><strong>Not Answered: </strong><span data-bind="text: quizResult().notanswered"></span></p>
+                                <p class="bg-primary" style="padding:5px;"><strong>Total: </strong><span class="badge pull-right" data-bind="text: quizResult().total"></span></p>
+                                <p class="bg-success" style="padding:5px;"><strong>Correct: </strong><span class="badge pull-right" data-bind="text: quizResult().correct"></span></p>
+                                <p class="bg-danger" style="padding:5px;"><strong>Wrong: </strong><span class="badge pull-right" data-bind="text: quizResult().wrong"></span></p>
+                                <p class="bg-warning" style="padding:5px;"><strong>Not Answered: </strong><span class="badge pull-right" data-bind="text: quizResult().notanswered"></span></p>
                             </div>
                          </div>
                     <!-- /ko -->

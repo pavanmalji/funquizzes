@@ -16,7 +16,8 @@ if(isset($_SESSION['user'])) {
         $skip = (isset($_GET['skip'])) ? $_GET['skip'] : 0;
         $response = $apperyclient->get_all_quizzes($limit, $skip, $_SESSION['apperysession']);
     } else if(isset($_GET['quizusers'])) {
-        $response = $apperyclient->get_quiz_users($_GET['quizid'], $_SESSION['apperysession']);
+        $sort = (isset($_GET['sort'])) ? $_GET['sort'] : '-_createdAt';
+        $response = $apperyclient->get_quiz_users($_GET['quizid'], $sort, $_SESSION['apperysession']);
     } else if(isset($_GET['activequizzes'])) {
         $limit = (isset($_GET['limit'])) ? $_GET['limit'] : 5;
         $skip = (isset($_GET['skip'])) ? $_GET['skip'] : 0;

@@ -117,9 +117,9 @@ class apperyio {
         return self::do_get('https://api.appery.io/rest/1/db/collections/Quizzes/?limit=' . urlencode($limit) . '&skip=' . urlencode($skip) . '&sort=' . urlencode('-_createdAt'), $sessiontoken);
     }
     
-    function get_quiz_users($quizid, $sessiontoken) {
+    function get_quiz_users($quizid, $sort, $sessiontoken) {
         $where = array ('quizId' => $quizid);
-        return self::do_get('https://api.appery.io/rest/1/db/collections/QuizzesUsers/?sort=' . urlencode('-correct') . '&where=' . urlencode(json_encode($where, JSON_UNESCAPED_SLASHES)), $sessiontoken);
+        return self::do_get('https://api.appery.io/rest/1/db/collections/QuizzesUsers/?sort=' . urlencode($sort) . '&where=' . urlencode(json_encode($where, JSON_UNESCAPED_SLASHES)), $sessiontoken);
     }
     
     
