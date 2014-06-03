@@ -2,7 +2,6 @@
 // Date: 2014-04-23
 // License: MIT (http://www.opensource.org/licenses/mit-license.php)
 
-var timeout = null;
 var sessioncookie = 'sessioncooky';
 function cooky(providerKey) {
     return {
@@ -361,9 +360,8 @@ var viewModel = {
 };
 
 viewModel.currentPageURL().loadPage = ko.dependentObservable(function() {
-    clearTimeout(timeout);
     viewModel.currentPageMessage().showMessage(false);
-    $.get(pages[viewModel.currentPageURL()][1], function (data) {
+    $.get(pages[viewModel.currentPageURL()][1] + '?_=' + (new Date().getTime()), function (data) {
         $('#page-content').hide().html(data).fadeIn(300);
         var pagecontent = $('#page-content')[0]; 
         ko.cleanNode(pagecontent);
@@ -447,15 +445,19 @@ $(document).on( "click", ".logout", function(e) {
 });
 
 function getQuizUsers() {
-    $.get( "utils/quizinfo.php?quizusers&quizid=" + viewModel.selectedQuiz()._id, function( data ) {
-        if(data !== undefined && data.length > 0) {
-            viewModel.quizUsers(data);
-            // clearTimeout(timeout);
-            // timeout = setTimeout(getQuizUsers, 500);
-        } else {
-        }  
-        // ToDo: Error Loading Active Quizzes
-    });
+    if(viewModel.currentPageURL() === 'dashboardquizresults') {
+        $.get( "utils/quizinfo.php?quizusers&quizid=" + viewModel.selectedQuiz()._id, function( data ) {
+            if(data !== undefined && data.length > 0) {
+                viewModel.quizUsers(data);
+                console.log(viewModel.currentPageURL());
+                if(viewModel.currentPageURL() === 'dashboardquizresults') {
+                   setTimeout(getQuizUsers(), 500);
+                }
+            } else {
+            }  
+            // ToDo: Error Loading Active Quizzes
+        });
+    }
 }
 
 function getAllQuizzes() {
@@ -548,7 +550,7 @@ function postPageLoad() {
             getAllQuizzes();
             break;
         case 'dashboardquizresults' : viewModel.currentPageTitle(viewModel.currentPageTitle() + ' - ' + viewModel.selectedQuiz().name);
-            timeout = setTimeout(getQuizUsers, 200);
+            getQuizUsers();
             break;
         case 'playersection' : viewModel.activeQuizzes([]);
             getActiveQuizzes();

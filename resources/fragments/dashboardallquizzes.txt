@@ -3,7 +3,7 @@
     <div class="row marketing">
         <div class="col-xs-12 col-sm-12">
             <div class="alert alert-info">
-                Please select the quiz.
+                <strong>Please select the quiz to view Results.</strong>
             </div>
             <div class="list-group" data-bind="template:    {   name: 'quiz-list-template', 
                                                                                 foreach: allquizzes(),
