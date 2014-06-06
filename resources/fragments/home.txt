@@ -19,7 +19,7 @@
               <span class="glyphicon glyphicon-user"></span>&nbsp;<strong>Quiz Master</strong>
             </p>
                 <!-- ko if: sessionUser().online -->
-                    <a class="list-group-item page-link" href="quizmastersection">Dash Board</a>
+                    <a class="list-group-item page-link" href="quizmastersection">Manage</a>
                     <a class="list-group-item page-link" href="quizmastercreatequiz">Create Quiz</a>
                 <!-- /ko -->
                 <!-- ko ifnot: sessionUser().online -->
