@@ -28,7 +28,7 @@
                 <script type="text/html" id="quizusers-template">
                     <tr>
                         <td>
-                              <img class="img-circle" data-bind="attr: { src: quizuser.userInfo.picture, alt: quizuser.userInfo.name}">
+                              <img class="img-thumbnail" data-bind="attr: { src: quizuser.userInfo.picture, alt: quizuser.userInfo.name}" style="width:64px;">
                               <br/>
                               <strong class="media-heading" data-bind="text: quizuser.userInfo.name"></strong>
                               <p data-bind="text: moment.utc(quizuser._updatedAt).fromNow()"></p>
