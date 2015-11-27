@@ -1,0 +1,68 @@
+<div class="row marketing">
+    <div class="col-xs-6 col-sm-8">
+        <div class="list-group">
+            <p class="list-group-item list-group-item-success">
+              <span class="glyphicon glyphicon-user"></span>&nbsp;<strong>Player</strong>
+            </p>
+                <!-- ko if: sessionUser().online -->
+                    <a class="list-group-item page-link" href="playersection">Play Quiz</a>
+                    <a class="list-group-item page-link" href="playerresults">My Results</a>
+                    <a class="list-group-item page-link hidden-xs" href="profile">My Profile</a>
+                <!-- /ko -->
+                <!-- ko ifnot: sessionUser().online -->
+                    <p class="list-group-item">Play Quiz</p>
+                    <p class="list-group-item">My Results</p>
+                    <p class="list-group-item hidden-xs">My Profile</p>
+                <!-- /ko -->
+            
+            <p class="list-group-item list-group-item-warning">
+              <span class="glyphicon glyphicon-user"></span>&nbsp;<strong>Quiz Master</strong>
+            </p>
+                <!-- ko if: sessionUser().online -->
+                    <a class="list-group-item page-link" href="quizmastersection">Manage</a>
+                    <a class="list-group-item page-link" href="quizmastercreatequiz">Create Quiz</a>
+                <!-- /ko -->
+                <!-- ko ifnot: sessionUser().online -->
+                    <p class="list-group-item">Dash Board</p>
+                    <p class="list-group-item">Create Quiz</p>
+                <!-- /ko -->
+        </div>
+    </div>
+
+    <div class="col-xs-6 col-sm-4">
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <!-- ko if: sessionUser().online -->
+                    <a href="profile" class="page-link">
+                        <img class="img-circle" data-bind="attr: { src: sessionUser().picture, alt: sessionUser().name}" style="width:100%; max-width:256px; padding-bottom:10px;">
+                    </a>
+                    
+                    <!-- ko if: (sessionUser().provider === 'gplus') -->
+                    <a class="btn btn-block btn-social btn-google-plus logout" href="gplus">
+                        <i class="fa fa-google-plus"></i>Sign Out
+                    </a>
+                    <!-- /ko -->
+                    
+                    <!-- ko if: (sessionUser().provider === 'fb') -->
+                    <a class="btn btn-block btn-social btn-facebook logout" href="fb">
+                        <i class="fa fa-facebook"></i>Sign Out
+                    </a>
+                    <!-- /ko -->
+                <!-- /ko -->
+
+                <!-- ko ifnot: sessionUser().online -->
+                    <img src="/resources/images/quiz.png" style="width:100%; max-width:256px;">
+
+                    <a class="btn btn-block btn-social btn-google-plus login" href="gplus">
+                        <i class="fa fa-google-plus"></i>Sign In
+                    </a>
+                    <a class="btn btn-block btn-social btn-facebook login" href="fb">
+                        <i class="fa fa-facebook"></i>Sign In
+                    </a>
+                <!-- /ko -->
+            </div>
+        </div>
+    </div>
+</div>
+
+
