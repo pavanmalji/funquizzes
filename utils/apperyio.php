@@ -144,10 +144,11 @@ class apperyio {
                                                 'picture' => $user['picture'], 
                                                 'link' => $user['link']
                             )
+
         );
         
         $quizdata = array(json_decode(self::do_post('https://api.appery.io/rest/1/db/collections/QuizzesUsers/', $data, $sessiontoken)));
-        
+
         $or = array();
         
         foreach ($quiz['questionids'] as $value) {
